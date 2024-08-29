@@ -7,6 +7,5 @@ msg = 0;
 print("Comenzando")
 while msg != 'q':
     msg = nano.read(1).decode('latin-1').strip();
-    print(msg)
     if msg == '1':
         print("Botón 1 presionado")
