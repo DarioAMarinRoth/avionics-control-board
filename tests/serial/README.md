@@ -16,7 +16,7 @@ El test tiene dos partes: el programa en C que corre en el arduino y un script e
 - Biblioteca `pyserial` para Python. Se puede instalar con :
   
     ```bash
-    pip install pyserial.
+    pip install pyserial
     ```
 
 ## Uso
