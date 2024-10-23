@@ -15,13 +15,31 @@
 #define F_I2C 100000        // FRECUENCIA DE COMUNICACIÓN: 100 kHz
 #define DEFAULT_SLA 0x10    // DIRECCIÓN DEL ESCLAVO POR DEFECTO
 
+// PRESCALER VALUES
+#define PRESCALER_1  ((0 << TWPS1) | (0 << TWPS0))
+#define PRESCALER_4  ((0 << TWPS1) | (1 << TWPS0))
+#define PRESCALER_16 ((1 << TWPS1) | (0 << TWPS0))
+#define PRESCALER_64 ((1 << TWPS1) | (1 << TWPS0))
+
+// SETTINGS
+#define SLA_W(address)	(address<<1)
+#define SLA_R(address)	((address<<1) | (1<<0))
+#define ENABLE_TWI  (1 << TWEN)
+#define ENABLE_ACK  (1 << TWEA)
+#define GEN_START   (1 << TWSTA)
+#define GEN_STOP    (1 << TWSTO)
+#define CLEAR_INT   (1 << TWINT)
+
+// MISC
+#define STATUS_REG_MASK 0xF8
+
 // Return Status Code
 enum twi_status {
- SUCCESS = 0,
- ERR_START_FAILED = 1,
- ERR_ARBITRATION_LOST = 2,
- ERR_NO_ACK = 3,
- ERR_MEMORY_ALLOCATION_FAILED = 4,
+    SUCCESS = 0,
+    ERR_START_FAILED = 1,
+    ERR_ARBITRATION_LOST = 2,
+    ERR_NO_ACK = 3,
+    ERR_MEMORY_ALLOCATION_FAILED = 4,
 };
 
 /**
@@ -95,6 +113,10 @@ void send_ACK(void);
  */
 void send_NACK(void);
 
+uint8_t twi_master_receive_byte (const uint8_t tx_sla);
+
+uint8_t twi_slave_transmit(const uint8_t data);
+
 /**
  * \brief Recibe datos en modo maestro desde un esclavo TWI.
  *
@@ -105,12 +127,12 @@ void send_NACK(void);
  * \param[in] n Número de bytes a recibir.
  * \return Código de estado de la operación de recepción.
  */
-uint8_t twi_master_receive(const uint8_t tx_sla, const int n);
+// uint8_t twi_master_receive(const uint8_t tx_sla, const int n);
 
 /**
  * \brief Libera la memoria asignada para el almacenamiento de datos recibidos.
  */
-void free_storage(void);
+// void free_storage(void);
 
 /**
  * \brief Inicializa el almacenamiento de datos recibidos.
@@ -120,7 +142,7 @@ void free_storage(void);
  * \param[in] n Número de bytes a almacenar.
  * \return Código de estado de la operación de inicialización.
  */
-int init_data(const size_t n);
+// int init_data(const size_t n);
 
 /**
  * \brief Obtiene los datos recibidos.
@@ -130,7 +152,5 @@ int init_data(const size_t n);
  * \return Puntero a los datos recibidos.
  */
 uint8_t* get_received_data(void);
-
-uint8_t twi_slave_transmit(const uint8_t *data);
 
 #endif /* _TWI_H */
