@@ -73,24 +73,26 @@ twi_t *twi = (twi_t *) (0xB8);
  * RECEIVED DATA STORAGE (MR MODE)
  **********************************************************************/
 
-uint8_t *twi_received_data;
+uint8_t twi_received_byte;
 
-void free_storage() {
-    free(twi_received_data);
-    twi_received_data = NULL;
-}
-
-int init_data(const size_t n) {
-    free_storage();
-    twi_received_data = (uint8_t *)malloc(n * sizeof(uint8_t));
-    if (twi_received_data == NULL) {
-        return ERR_MEMORY_ALLOCATION_FAILED;
-    }
-    return SUCCESS;
-}
-
+// uint8_t *twi_received_data;
+//
+// void free_storage() {
+//     free(twi_received_data);
+//     twi_received_data = NULL;
+// }
+//
+// int init_data(const size_t n) {
+//     free_storage();
+//     twi_received_data = (uint8_t *)malloc(n * sizeof(uint8_t));
+//     if (twi_received_data == NULL) {
+//         return ERR_MEMORY_ALLOCATION_FAILED;
+//     }
+//     return SUCCESS;
+// }
+//
 uint8_t* get_received_data() {
-    return twi_received_data;
+    return twi_received_byte;
 }
 
 /**********************************************************************
@@ -147,7 +149,9 @@ static void send_NACK() {
         ;
 }
 
-uint8_t twi_master_receive(const uint8_t tx_sla, const int n) {
+
+uint8_t twi_master_receive_byte (const uint8_t tx_sla) {
+
     if(init_data(n) == ERR_MEMORY_ALLOCATION_FAILED) {
         return ERR_MEMORY_ALLOCATION_FAILED;
     }
@@ -170,13 +174,42 @@ uint8_t twi_master_receive(const uint8_t tx_sla, const int n) {
         twi_stop();
         return ERR_NO_ACK;
     }
-
-    for (int i = 0; i < n - 1; ++i) {
-        send_ACK();
-        twi_received_data[i] = twi->twdr;
-    }
     send_NACK();
-    twi_received_data[n - 1] = twi->twdr;
+    twi_received_byte = twi->twdr;
     twi_stop();
     return SUCCESS;
 }
+
+// uint8_t twi_master_receive(const uint8_t tx_sla, const int n) {
+//     if(init_data(n) == ERR_MEMORY_ALLOCATION_FAILED) {
+//         return ERR_MEMORY_ALLOCATION_FAILED;
+//     }
+//     uint8_t status = 0;
+//
+//     status = twi_start();
+//     if (status != START_CONDITION_TRANSMITTED) {
+//         free_storage();
+//         return ERR_START_FAILED;
+//     }
+//
+//     status = transmit(SLA_R(tx_sla));
+//     if (status == ARBITRATION_LOST) {
+//         free_storage();
+//         return ERR_ARBITRATION_LOST;
+//     }
+//
+//     if (status == SLA_R_TRANSMITTED_NO_ACK_RECEIVED) {
+//         free_storage();
+//         twi_stop();
+//         return ERR_NO_ACK;
+//     }
+//
+//     for (int i = 0; i < n - 1; ++i) {
+//         send_ACK();
+//         twi_received_data[i] = twi->twdr;
+//     }
+//     send_NACK();
+//     twi_received_data[n - 1] = twi->twdr;
+//     twi_stop();
+//     return SUCCESS;
+// }
