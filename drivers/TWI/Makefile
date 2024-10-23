@@ -1,5 +1,5 @@
 CC=avr-gcc
-OBJETOS=main.o twi.o gpio.o
+OBJETOS=main.o twi.o
 APP=serial-app
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 // CONSTANTS
-#define F_CPU 16000000      // FRECUENCIA DEL PROCESADOR: 16 MHz
+#define FR_CPU 16000000      // FRECUENCIA DEL PROCESADOR: 16 MHz
 #define F_I2C 100000        // FRECUENCIA DE COMUNICACIÓN: 100 kHz
 #define DEFAULT_SLA 0x10    // DIRECCIÓN DEL ESCLAVO POR DEFECTO
 
@@ -91,7 +91,7 @@ uint8_t twi_received_byte;
 //     return SUCCESS;
 // }
 //
-uint8_t* get_received_data() {
+uint8_t get_received_data() {
     return twi_received_byte;
 }
 
@@ -105,7 +105,7 @@ static uint8_t get_status(void) {
 
 void master_init(void) {
     twi->twsr = PRESCALER_16;
-    twi->twbr = (F_CPU / F_I2C - 16) / (2 * 16);
+    twi->twbr = (FR_CPU / F_I2C - 16) / (2 * 16);
     twi->twcr = ENABLE_TWI;
 }
 
@@ -151,26 +151,19 @@ static void send_NACK() {
 
 
 uint8_t twi_master_receive_byte (const uint8_t tx_sla) {
-
-    if(init_data(n) == ERR_MEMORY_ALLOCATION_FAILED) {
-        return ERR_MEMORY_ALLOCATION_FAILED;
-    }
     uint8_t status = 0;
 
     status = twi_start();
     if (status != START_CONDITION_TRANSMITTED) {
-        free_storage();
         return ERR_START_FAILED;
     }
 
     status = transmit(SLA_R(tx_sla));
     if (status == ARBITRATION_LOST) {
-        free_storage();
         return ERR_ARBITRATION_LOST;
     }
 
     if (status == SLA_R_TRANSMITTED_NO_ACK_RECEIVED) {
-        free_storage();
         twi_stop();
         return ERR_NO_ACK;
     }
@@ -179,6 +172,20 @@ uint8_t twi_master_receive_byte (const uint8_t tx_sla) {
     twi_stop();
     return SUCCESS;
 }
+
+uint8_t twi_slave_transmit(const uint8_t data) {
+    uint8_t status = 0;
+    while (!I2C_TRANSMISSION_COMPLETE)
+        ;
+    status = get_status();
+    if (status != SLA_R_RECEIVED_ACK_TRANSMITTED) {
+        return ERR_START_FAILED;
+    }
+    status = transmit(data);
+    return SUCCESS;
+}
+
+
 
 // uint8_t twi_master_receive(const uint8_t tx_sla, const int n) {
 //     if(init_data(n) == ERR_MEMORY_ALLOCATION_FAILED) {

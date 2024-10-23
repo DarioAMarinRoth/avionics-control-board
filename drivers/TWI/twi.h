@@ -113,7 +113,9 @@ void send_ACK(void);
  */
 void send_NACK(void);
 
-twi_master_receive_byte (const uint8_t tx_sla);
+uint8_t twi_master_receive_byte (const uint8_t tx_sla);
+
+uint8_t twi_slave_transmit(const uint8_t data);
 
 /**
  * \brief Recibe datos en modo maestro desde un esclavo TWI.

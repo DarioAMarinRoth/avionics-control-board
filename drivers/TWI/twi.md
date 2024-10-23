@@ -2,7 +2,7 @@
 
 ## Constantes
 
-- `F_CPU`: Frecuencia del procesador: 16 MHz
+- `FR_CPU`: Frecuencia del procesador: 16 MHz
 - `F_I2C`: Frecuencia de comunicación: 100 kHz
 - `DEFAULT_SLA`: Dirección del esclavo por defecto
 
