@@ -151,6 +151,6 @@ uint8_t twi_slave_transmit(const uint8_t data);
  *
  * \return Puntero a los datos recibidos.
  */
-uint8_t* get_received_data(void);
+uint8_t get_received_data(void);
 
 #endif /* _TWI_H */

@@ -7,6 +7,6 @@ int main(void) {
     slave_init();
 
     while (1) {
-        twi_slave_transmit(gpio_pin(13,GET));
+        twi_slave_transmit(1);
     }
 }
