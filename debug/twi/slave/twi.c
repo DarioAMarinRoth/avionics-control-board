@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "serial.h"
 
 // CONSTANTS
 #define FR_CPU 16000000      // FRECUENCIA DEL PROCESADOR: 16 MHz
@@ -44,15 +45,6 @@
 #define SLA_R_TRANSMITTED_NO_ACK_RECEIVED 0x48
 #define SLA_R_RECEIVED_ACK_TRANSMITTED 0XA8
 #define I2C_TRANSMISSION_COMPLETE (twi->twcr & (1 << TWINT))
-
-// Return Status Code
-enum twi_status {
-    SUCCESS = 0,
-    ERR_START_FAILED = 1,
-    ERR_ARBITRATION_LOST = 2,
-    ERR_NO_ACK = 3,
-    ERR_MEMORY_ALLOCATION_FAILED = 4,
-};
 
 /**********************************************************************
  * TWI STRUCTURE
@@ -99,8 +91,46 @@ uint8_t get_received_data() {
  * TWI FUNCTIONS
  **********************************************************************/
 
+// Return Status Code
+enum twi_status {
+    SUCCESS = 0,
+    ERR_START_FAILED = 1,
+    ERR_ARBITRATION_LOST = 2,
+    ERR_NO_ACK = 3,
+    ERR_MEMORY_ALLOCATION_FAILED = 4,
+};
+
 static uint8_t get_status(void) {
     return twi->twsr & STATUS_REG_MASK;
+}
+
+static void logger(int status) {
+    serial_init();
+    switch (status) {
+        case START_CONDITION_TRANSMITTED:
+            serial_put_str("Start condition transmitted\n");
+            break;
+        case SLA_W_TRANSMITTED_ACK_RECEIVED:
+            serial_put_str("SLA+W transmitted, ACK received\n");
+            break;
+        case SLA_W_TRANSMITTED_NO_ACK_RECEIVED:
+            serial_put_str("SLA+W transmitted, no ACK received\n");
+            break;
+        case ARBITRATION_LOST:
+            serial_put_str("Arbitration lost\n");
+            break;
+        case SLA_R_TRANSMITTED_ACK_RECEIVED:
+            serial_put_str("SLA+R transmitted, ACK received\n");
+            break;
+        case SLA_R_TRANSMITTED_NO_ACK_RECEIVED:
+            serial_put_str("SLA+R transmitted, no ACK received\n");
+            break;
+        case SLA_R_RECEIVED_ACK_TRANSMITTED:
+            serial_put_str("SLA+R received, ACK transmitted\n");
+            break;
+        default:
+            serial_put_str("Unknown status\n");
+    }
 }
 
 void master_init(void) {
@@ -154,11 +184,13 @@ uint8_t twi_master_receive_byte (const uint8_t tx_sla) {
     uint8_t status = 0;
 
     status = twi_start();
+    logger(status);
     if (status != START_CONDITION_TRANSMITTED) {
         return ERR_START_FAILED;
     }
 
     status = transmit(SLA_R(tx_sla));
+    logger(status);
     if (status == ARBITRATION_LOST) {
         return ERR_ARBITRATION_LOST;
     }
@@ -170,6 +202,8 @@ uint8_t twi_master_receive_byte (const uint8_t tx_sla) {
     send_NACK();
     twi_received_byte = twi->twdr;
     twi_stop();
+    status =  get_status();
+    logger(status);
     return SUCCESS;
 }
 
@@ -178,10 +212,12 @@ uint8_t twi_slave_transmit(const uint8_t data) {
     while (!I2C_TRANSMISSION_COMPLETE)
         ;
     status = get_status();
+    logger(status);
     if (status != SLA_R_RECEIVED_ACK_TRANSMITTED) {
         return ERR_START_FAILED;
     }
-    transmit(data);
+    status = transmit(data);
+    logger(status);
     return SUCCESS;
 }
 
