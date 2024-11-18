@@ -11,35 +11,35 @@
 #include <stdlib.h>
 
 // CONSTANTS
-#define FR_CPU 16000000      // FRECUENCIA DEL PROCESADOR: 16 MHz
-#define F_I2C 100000        // FRECUENCIA DE COMUNICACIÓN: 100 kHz
-#define DEFAULT_SLA 0x10    // DIRECCIÓN DEL ESCLAVO POR DEFECTO
+#define F_MASTER 16000000  // FRECUENCIA DEL PROCESADOR: 16 MHz
+#define F_I2C 100000       // FRECUENCIA DE COMUNICACIÓN: 100 kHz
+#define DEFAULT_SLA 0x10   // DIRECCIÓN DEL ESCLAVO POR DEFECTO
 
 // PRESCALER VALUES
-#define PRESCALER_1  ((0 << TWPS1) | (0 << TWPS0))
-#define PRESCALER_4  ((0 << TWPS1) | (1 << TWPS0))
+#define PRESCALER_1 ((0 << TWPS1) | (0 << TWPS0))
+#define PRESCALER_4 ((0 << TWPS1) | (1 << TWPS0))
 #define PRESCALER_16 ((1 << TWPS1) | (0 << TWPS0))
 #define PRESCALER_64 ((1 << TWPS1) | (1 << TWPS0))
 
 // SETTINGS
-#define SLA_W(address)	(address<<1)
-#define SLA_R(address)	((address<<1) | (1<<0))
-#define ENABLE_TWI  (1 << TWEN)
-#define ENABLE_ACK  (1 << TWEA)
-#define GEN_START   (1 << TWSTA)
-#define GEN_STOP    (1 << TWSTO)
-#define CLEAR_INT   (1 << TWINT)
+#define SLA_W(address) (address << 1)
+#define SLA_R(address) ((address << 1) | (1 << 0))
+#define ENABLE_TWI (1 << TWEN)
+#define ENABLE_ACK (1 << TWEA)
+#define GEN_START (1 << TWSTA)
+#define GEN_STOP (1 << TWSTO)
+#define CLEAR_INT (1 << TWINT)
 
 // MISC
 #define STATUS_REG_MASK 0xF8
 
 // Return Status Code
 enum twi_status {
-    SUCCESS = 0,
-    ERR_START_FAILED = 1,
-    ERR_ARBITRATION_LOST = 2,
-    ERR_NO_ACK = 3,
-    ERR_MEMORY_ALLOCATION_FAILED = 4,
+  SUCCESS = 0,
+  ERR_START_FAILED = 1,
+  ERR_ARBITRATION_LOST = 2,
+  ERR_NO_ACK = 3,
+  ERR_MEMORY_ALLOCATION_FAILED = 4,
 };
 
 /**
@@ -62,8 +62,8 @@ void slave_init(void);
 /**
  * \brief Inicializa el TWI en modo esclavo con una dirección específica.
  *
- * Configura el registro de dirección TWI con la dirección del esclavo proporcionada
- * y habilita el TWI y la generación de ACK.
+ * Configura el registro de dirección TWI con la dirección del esclavo
+ * proporcionada y habilita el TWI y la generación de ACK.
  *
  * \param[in] sla Dirección del esclavo a configurar.
  */
@@ -108,20 +108,20 @@ void send_ACK(void);
 /**
  * \brief Envía una señal de no reconocimiento (NACK) en el bus TWI.
  *
- * Configura el registro de control TWI para enviar una señal de no reconocimiento
- * y espera hasta que la transmisión se complete.
+ * Configura el registro de control TWI para enviar una señal de no
+ * reconocimiento y espera hasta que la transmisión se complete.
  */
 void send_NACK(void);
 
-uint8_t twi_master_receive_byte (const uint8_t tx_sla);
+uint8_t twi_master_receive_byte(const uint8_t tx_sla);
 
 uint8_t twi_slave_transmit(const uint8_t data);
 
 /**
  * \brief Recibe datos en modo maestro desde un esclavo TWI.
  *
- * Inicia una condición de inicio, transmite la dirección del esclavo con el bit de lectura,
- * y recibe los datos del esclavo.
+ * Inicia una condición de inicio, transmite la dirección del esclavo con el bit
+ * de lectura, y recibe los datos del esclavo.
  *
  * \param[in] tx_sla Dirección del esclavo desde el cual recibir los datos.
  * \param[in] n Número de bytes a recibir.

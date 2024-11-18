@@ -107,7 +107,7 @@ void serial_put_str(char *str)
 	}
 }
 
-char serial_get_str(char * buffer, int max_string_length)
+char* serial_get_str(char * buffer, int max_string_length)
 {
 	int i = 0;
 	char c;
