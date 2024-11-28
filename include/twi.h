@@ -49,7 +49,7 @@ enum twi_status {
  * establece el registro de bit rate TWI para la frecuencia de CPU y TWI,
  * y habilita el TWI.
  */
-void master_init(void);
+void master_init(uint8_t logs);
 
 /**
  * \brief Inicializa el TWI en modo esclavo.
