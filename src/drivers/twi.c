@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include <serial.h>
+#include <util/twi.h>
 
 // CONSTANTS
 #define F_MASTER 16000000  // FRECUENCIA DEL PROCESADOR: 16 MHz
@@ -27,25 +28,11 @@
 #define GEN_START (1 << TWSTA)
 #define GEN_STOP (1 << TWSTO)
 #define CLEAR_INT (1 << TWINT)
+#define SLAVE_STOP (1 << TWINT) | (1 << TWEA)
+
 
 // MISC
 #define STATUS_REG_MASK 0xF8
-
-/**********************************************************************
- * STATUS CODES
- **********************************************************************/
-
-// Status Codes from datasheet
-#define START_CONDITION_TRANSMITTED 0x08
-#define SLA_W_TRANSMITTED_ACK_RECEIVED 0x18
-#define SLA_W_TRANSMITTED_NO_ACK_RECEIVED 0x20
-#define ARBITRATION_LOST 0x38
-#define SLA_R_TRANSMITTED_ACK_RECEIVED 0x40
-#define SLA_R_TRANSMITTED_NO_ACK_RECEIVED 0x48
-#define SLA_R_RECEIVED_ACK_TRANSMITTED 0XA8
-#define DATA_RECEIVED_ACK_TRANSMITTED 0x50
-#define DATA_RECEIVED_NO_ACK_TRANSMITTED 0x58
-#define NO_RELEVANT_INFO 0xF8
 #define I2C_TRANSMISSION_COMPLETE (twi->twcr & (1 << TWINT))
 
 /**********************************************************************
@@ -101,7 +88,7 @@ static void log_message(char *message) {
 static void log_start_communication() {
     log_message("");
     log_message("**********************************************************");
-    log_message("RUTINA DE RECEPCIÓN INICIADA");
+    log_message("COMUNICACIÓN INICIADA");
     log_message("");
 }
 
@@ -112,43 +99,100 @@ static void log_end_communication() {
     log_message("");
 }
 
+static void log_message_int(char *message, uint8_t value) {
+    if (!twi_logger_enabled) {
+        return;
+    }
+    serial_put_str(message);
+    serial_put_int(value, 2);
+    serial_put_str("\n\r");
+}
+
 static void log_status(uint8_t status) {
     if (!twi_logger_enabled) {
         return;
     }
     switch (status) {
-        case START_CONDITION_TRANSMITTED:
+        case TW_START:
             log_message("STATUS: Condición de START transmitida");
             break;
-        case SLA_W_TRANSMITTED_ACK_RECEIVED:
+        case TW_REP_START:
+            log_message("STATUS: Condición de REPETICIÓN DE START transmitida");
+            break;
+        case TW_MT_SLA_ACK:
             log_message("STATUS: SLA+W transmitida y ACK recibido");
             break;
-        case SLA_W_TRANSMITTED_NO_ACK_RECEIVED:
-            log_message("STATUS: SLA+W transmitida y NO ACK recibido");
+        case TW_MT_SLA_NACK:
+            log_message("STATUS: SLA+W transmitida y NACK recibido");
             break;
-        case SLA_R_TRANSMITTED_ACK_RECEIVED:
+        case TW_MT_DATA_ACK:
+            log_message("STATUS: Datos transmitidos y ACK recibido");
+            break;
+        case TW_MT_DATA_NACK:
+            log_message("STATUS: Datos transmitidos y NACK recibido");
+            break;
+        case TW_MT_ARB_LOST:
+            log_message("STATUS: Arbitraje perdido en SLA+W o datos");
+            break;
+        case TW_MR_SLA_ACK:
             log_message("STATUS: SLA+R transmitida y ACK recibido");
             break;
-        case SLA_R_TRANSMITTED_NO_ACK_RECEIVED:
-            log_message("STATUS: SLA+R transmitida y NO ACK recibido");
+        case TW_MR_SLA_NACK:
+            log_message("STATUS: SLA+R transmitida y NACK recibido");
             break;
-        case ARBITRATION_LOST:
-            log_message("STATUS: Pérdida de arbitraje");
+        case TW_MR_DATA_ACK:
+            log_message("STATUS: Datos recibidos y ACK devuelto");
             break;
-        case DATA_RECEIVED_ACK_TRANSMITTED:
-            log_message("STATUS: Datos recibidos y ACK transmitido");
+        case TW_MR_DATA_NACK:
+            log_message("STATUS: Datos recibidos y NACK devuelto");
             break;
-        case DATA_RECEIVED_NO_ACK_TRANSMITTED:
-            log_message("STATUS: Datos recibidos y NO ACK transmitido");
+        case TW_ST_SLA_ACK:
+            log_message("STATUS: SLA+R recibida y ACK devuelto");
             break;
-        case NO_RELEVANT_INFO:
-            log_message("STATUS: No hay información relevante. El bit TWINT está en 0");
+        case TW_ST_ARB_LOST_SLA_ACK:
+            log_message("STATUS: Arbitraje perdido en SLA+RW, SLA+R recibida y ACK devuelto");
             break;
-        case ERR_START_FAILED:
-            log_message("ERROR: Fallo al enviar condición de START");
+        case TW_ST_DATA_ACK:
+            log_message("STATUS: Datos transmitidos y ACK recibido");
             break;
-        case ERR_NO_ACK:
-            log_message("ERROR: No se recibió ACK");
+        case TW_ST_DATA_NACK:
+            log_message("STATUS: Datos transmitidos y NACK recibido");
+            break;
+        case TW_ST_LAST_DATA:
+            log_message("STATUS: Últimos datos transmitidos y ACK recibido");
+            break;
+        case TW_SR_SLA_ACK:
+            log_message("STATUS: SLA+W recibida y ACK devuelto");
+            break;
+        case TW_SR_ARB_LOST_SLA_ACK:
+            log_message("STATUS: Arbitraje perdido en SLA+W, SLA+W recibida y ACK devuelto");
+            break;
+        case TW_SR_GCALL_ACK:
+            log_message("STATUS: Llamada general recibida y ACK devuelto");
+            break;
+        case TW_SR_ARB_LOST_GCALL_ACK:
+            log_message("STATUS: Arbitraje perdido en SLA+RW, llamada general recibida y ACK devuelto");
+            break;
+        case TW_SR_DATA_ACK:
+            log_message("STATUS: Datos recibidos y ACK devuelto");
+            break;
+        case TW_SR_DATA_NACK:
+            log_message("STATUS: Datos recibidos y NACK devuelto");
+            break;
+        case TW_SR_GCALL_DATA_ACK:
+            log_message("STATUS: Datos de llamada general recibidos y ACK devuelto");
+            break;
+        case TW_SR_GCALL_DATA_NACK:
+            log_message("STATUS: Datos de llamada general recibidos y NACK devuelto");
+            break;
+        case TW_SR_STOP:
+            log_message("STATUS: Condición de STOP o REPETICIÓN DE START recibida mientras seleccionado");
+            break;
+        case TW_NO_INFO:
+            log_message("STATUS: No hay información de estado disponible");
+            break;
+        case TW_BUS_ERROR:
+            log_message("STATUS: Condición de inicio o parada ilegal");
             break;
         default:
             serial_put_str("WARNING: Código de estado desconocido: ");
@@ -181,7 +225,11 @@ void sla_slave_init(const uint8_t sla) {
     log_message("INFO: Inicialización completada");
 }
 
-void slave_init() { sla_slave_init(DEFAULT_SLA); }
+void slave_init(int logs) {
+    if (logs)
+        twi_logger_init();
+    sla_slave_init(DEFAULT_SLA);
+}
 
 static uint8_t twi_start(void) {
     log_message("INFO: Enviando condición de START");
@@ -220,30 +268,36 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
     log_start_communication();
 
     uint8_t status = 0;
-    status = twi_start();
-    log_status(status);
-    if (status != START_CONDITION_TRANSMITTED) {
-        log_message("INFO: interrumpiendo transmisión");
-        log_end_communication();
-        return ERR_START_FAILED;
-    }
+    uint8_t tries = 0;
 
-    log_message("INFO: enviando dirección del esclavo y bit de lectura");
-    status = transmit(SLA_R(tx_sla));
-    log_status(status);
-    if (status == ARBITRATION_LOST) {
-        log_message("INFO: interrumpiendo transmisión");
-        twi_stop();
-        log_end_communication();
-        return ERR_ARBITRATION_LOST;
-    }
+    do {
+        status = twi_start();
+        log_status(status);
+        if (status != TW_START) {
+            log_message("INFO: interrumpiendo transmisión");
+            log_end_communication();
+            return ERR_START_FAILED;
+        }
 
-    if (status == SLA_R_TRANSMITTED_NO_ACK_RECEIVED) {
-        log_message("INFO: interrumpiendo transmisión");
-        twi_stop();
-        log_end_communication();
-        return ERR_NO_ACK;
-    }
+        // La señal de start se transmitió
+        log_message("INFO: enviando dirección del esclavo y bit de lectura");
+        status = transmit(SLA_R(tx_sla));
+        log_status(status);
+        if (status == TW_MR_ARB_LOST) {
+            log_message("INFO: interrumpiendo transmisión");
+            twi_stop();
+            log_end_communication();
+            return ERR_ARBITRATION_LOST;
+        }
+
+        if (status == TW_MR_SLA_NACK) {
+            tries = tries + 1;
+            log_message_int("INFO: Reiniciando comunicación. Intento: ", tries);
+            log_message("");
+            twi_stop();
+        }
+    } while (status != TW_MR_SLA_ACK);
+
 
     send_NACK();
     log_status(get_status());
@@ -254,13 +308,18 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
 }
 
 uint8_t twi_slave_transmit(const uint8_t data) {
-    uint8_t status = 0;
+    log_start_communication();
     while (!I2C_TRANSMISSION_COMPLETE)
         ;
-    status = get_status();
-    if (status != SLA_R_RECEIVED_ACK_TRANSMITTED) {
-        return ERR_START_FAILED;
+    int status = get_status();
+    log_status(status);
+    if (status != TW_ST_SLA_ACK) {
+        log_message("INFO: interrumpiendo transmisión");
     }
+    log_message_int("INFO: Enviando datos: ", data);
     status = transmit(data);
+    log_status(status);
+    log_end_communication();
+    twi->twcr = SLAVE_STOP;
     return SUCCESS;
 }

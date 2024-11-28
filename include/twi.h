@@ -57,7 +57,7 @@ void master_init(uint8_t logs);
  * Configura el registro de dirección TWI con la dirección del esclavo
  * y habilita el TWI y la generación de ACK.
  */
-void slave_init(void);
+void slave_init(uint8_t logs);
 
 /**
  * \brief Inicializa el TWI en modo esclavo con una dirección específica.
