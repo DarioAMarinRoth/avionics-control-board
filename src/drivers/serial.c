@@ -185,8 +185,3 @@ void serial_put_double (double value, int int_digits, int frac_digits)
 	}
 }
 
-char serial_recibido(void)
-{
-	/* COMPLETAR */
-}
-
