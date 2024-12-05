@@ -242,6 +242,8 @@ static uint8_t twi_start(void) {
 
 static void twi_stop(void) {
     twi->twcr = GEN_STOP | CLEAR_INT | ENABLE_TWI;
+//    while (twi->twcr & GEN_STOP)
+//        ;
 }
 
 static uint8_t transmit(const uint8_t data) {
@@ -258,7 +260,7 @@ static void send_ACK() {
 }
 
 static void send_NACK() {
-    log_message("INFO: Enviando NACK");
+//    log_message("INFO: Enviando NACK");
     twi->twcr = CLEAR_INT | ENABLE_TWI;
     while (!I2C_TRANSMISSION_COMPLETE);
 }
@@ -279,7 +281,6 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
             return ERR_START_FAILED;
         }
 
-        // La señal de start se transmitió
         log_message("INFO: enviando dirección del esclavo y bit de lectura");
         status = transmit(SLA_R(tx_sla));
         log_status(status);
@@ -296,11 +297,17 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
             log_message("");
             twi_stop();
         }
+
+        if (tries > 3) {
+            log_message("INFO: interrumpiendo transmisión");
+            log_end_communication();
+            return ERR_NO_ACK;
+        }
     } while (status != TW_MR_SLA_ACK);
 
 
     send_NACK();
-    log_status(get_status());
+//    log_status(get_status());
     twi_received_byte = twi->twdr;
     twi_stop();
     log_end_communication();
@@ -315,11 +322,14 @@ uint8_t twi_slave_transmit(const uint8_t data) {
     log_status(status);
     if (status != TW_ST_SLA_ACK) {
         log_message("INFO: interrumpiendo transmisión");
+        return status;
     }
     log_message_int("INFO: Enviando datos: ", data);
     status = transmit(data);
-    log_status(status);
-    log_end_communication();
-    twi->twcr = SLAVE_STOP;
+//    log_status(status);
+//    log_end_communication();
+//    twi->twcr = SLAVE_STOP;
+    while (!I2C_TRANSMISSION_COMPLETE)
+        ;
     return SUCCESS;
 }
