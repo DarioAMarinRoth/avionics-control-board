@@ -4,7 +4,7 @@
 #include "twi.h"
 
 int main(void) {
-    master_init(1);
+    master_init();
     uint8_t data = 0;
     gpio_output(13);
     gpio_pin(13, OFF);
