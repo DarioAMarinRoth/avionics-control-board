@@ -28,8 +28,6 @@
 #define GEN_START (1 << TWSTA)
 #define GEN_STOP (1 << TWSTO)
 #define CLEAR_INT (1 << TWINT)
-#define SLAVE_STOP (1 << TWINT) | (1 << TWEA)
-
 
 // MISC
 #define STATUS_REG_MASK 0xF8
@@ -242,8 +240,6 @@ static uint8_t twi_start(void) {
 
 static void twi_stop(void) {
     twi->twcr = GEN_STOP | CLEAR_INT | ENABLE_TWI;
-//    while (twi->twcr & GEN_STOP)
-//        ;
 }
 
 static uint8_t transmit(const uint8_t data) {
@@ -260,7 +256,7 @@ static void send_ACK() {
 }
 
 static void send_NACK() {
-//    log_message("INFO: Enviando NACK");
+    log_message("INFO: Enviando NACK");
     twi->twcr = CLEAR_INT | ENABLE_TWI;
     while (!I2C_TRANSMISSION_COMPLETE);
 }
@@ -284,6 +280,10 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
         log_message("INFO: enviando dirección del esclavo y bit de lectura");
         status = transmit(SLA_R(tx_sla));
         log_status(status);
+
+        if (status == TW_MR_SLA_ACK)
+            break;
+
         if (status == TW_MR_ARB_LOST) {
             log_message("INFO: interrumpiendo transmisión");
             twi_stop();
@@ -303,11 +303,10 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla) {
             log_end_communication();
             return ERR_NO_ACK;
         }
-    } while (status != TW_MR_SLA_ACK);
-
+    } while (1);
 
     send_NACK();
-//    log_status(get_status());
+    log_status(get_status());
     twi_received_byte = twi->twdr;
     twi_stop();
     log_end_communication();
@@ -326,10 +325,11 @@ uint8_t twi_slave_transmit(const uint8_t data) {
     }
     log_message_int("INFO: Enviando datos: ", data);
     status = transmit(data);
-//    log_status(status);
-//    log_end_communication();
-//    twi->twcr = SLAVE_STOP;
-    while (!I2C_TRANSMISSION_COMPLETE)
-        ;
+    if (status != TW_ST_DATA_NACK) {
+        return status;
+    }
+    log_status(status);
+    log_end_communication();
+    twi->twcr = CLEAR_INT | ENABLE_TWI | ENABLE_ACK; // Slave last action
     return SUCCESS;
 }
