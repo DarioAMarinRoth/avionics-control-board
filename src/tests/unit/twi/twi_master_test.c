@@ -9,24 +9,13 @@ int main(void) {
     gpio_output(13);
     gpio_pin(13, OFF);
 
-    twi_master_receive_byte(DEFAULT_SLA);
-    data = get_received_data();
-    if (data == 0) {
-        gpio_pin(13, OFF);
-    } else {
-        gpio_pin(13, ON);
+    while (1) {
+        twi_master_receive_byte(DEFAULT_SLA);
+        data = get_received_data();
+        if (data == 0) {
+            gpio_pin(13, OFF);
+        } else {
+            gpio_pin(13, ON);
+        }
     }
-
-    while (1)
-        ;
-
-    twi_master_receive_byte(DEFAULT_SLA);
-    data = get_received_data();
-    if (data == 0) {
-        gpio_pin(13, OFF);
-    } else {
-        gpio_pin(13, ON);
-    }
-
-
 }
