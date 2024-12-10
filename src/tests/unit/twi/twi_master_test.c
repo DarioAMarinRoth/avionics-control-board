@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 #include "gpio.h"
-#include "twi.h"
+#include "twi-master.h"
 
 int main(void) {
     master_init();

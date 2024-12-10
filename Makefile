@@ -36,10 +36,10 @@ all:
 	@echo ""
 	@echo "Recordar hacer make clean antes de compilar otra app."
 
-twi-master-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi.o $(BUILD_DIR)/twi_master_test.o
+twi-master-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/twi_master_test.o
 	$(LINK)
 
-twi-slave-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi.o $(BUILD_DIR)/twi_slave_test.o
+twi-slave-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/twi_slave_test.o
 	$(LINK)
 
 # Objetos:
