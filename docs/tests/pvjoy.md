@@ -13,7 +13,7 @@ Este script utiliza la biblioteca pyvjoy para simular la pulsación de un botón
 ### Instalación
 
 1. [Descargar](https://www.vjoy.org/download-for-windows/download) e instalar vJoy.
-   - Luego de la instalación, en los dispositos de juego USB debería aparecer un nuevo dispositivo llamado vJoyDevice.
+   - Luego de la instalación, en los dispositivos de juego USB debería aparecer un nuevo dispositivo llamado vJoyDevice.
 2. Instalar `pyvjoy`
    - Esto se puede hacer utilizando el siguiente comando:
   

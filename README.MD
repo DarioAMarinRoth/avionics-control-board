@@ -11,7 +11,35 @@ Este repositorio contiene el desarrollo del proyecto final de la materia optativ
 
 - Posibilidad de conectar hasta más de 36 entradas.
 - Control e interacción en tiempo real con Flight Simulator.
-- Respuestas en base a eventos que sucedan en el simulador.
+- Respuestas basándose en eventos que sucedan en el simulador.
+
+## Requisitos
+
+> [!WARNING]  
+> Para compilar y flahsear el código en el microcontrolador, será necesario hacerlo en un sistema operativo Linux.
+
+### Hardware
+
+- Arduino Nano: x2
+- Resistencias varias
+- Interruptores varios
+- Diodos
+- Cables
+
+### Software
+- **GNU Make**: Herramienta de automatización de compilación.
+- **avr-gcc**: Compilador para microcontroladores AVR.
+- **avrdude**: Herramienta para programar microcontroladores AVR.
+- **Bibliotecas de desarrollo AVR**: Necesarias para compilar el código para el microcontrolador.
+- **Python 3**: Lenguaje de programación.
+
+#### Instalación en Linux
+
+Se pueden instalar las herramientas necesarias en una distribución basada en Debian/Ubuntu mediante:
+
+```sh
+sudo apt install make gcc-avr avr-libc avrdude
+```
 
 ## Pruebas
 

@@ -17,16 +17,27 @@ El test tiene dos partes: el programa en C que corre en el arduino y un script e
 
 ## Uso
 
+### Conexionado
+El armado consiste simplemente en conectar uno de los terminales de los pulsadores a los pines D2 y D12 del arduino utilizando las resistencias en configuración de pull down y el otro terminal a +5V. A continuación se muestra un esquema de conexión:
+
+[Conexionado](../schematics/py-serial.svg)
+
 ### Configuración del Arduino
 
-1. Conectar los pulsadores a los pines D2 y D12 del arduino utilizando las resistencias en configuración de pull down.
-2. Compilar el programa con el comando con `make` y flahsear con `make flash`.
+1. Abrir una terminal y situarse en el directorio raíz del proyecto.
+2. Ejecutar el comando `make py-serial-test` para compilar el programa.
+3. Conectar el Arduino a la computadora.
+4. Flashear el programa en el Arduino con el comando `make flash`.
+5. Limpiar la carpeta de archivos generados con el comando `make clean`. _(Opcional)_
 
 ### Configurar el puerto en Python
 
-El primer argumento del constructor de la clase `Serial` debe ser el puerto serial al que está conectado el Arduino.
+En el script de Python, se debe configurar el puerto serial al que está conectado el Arduino en el archivo [`src/tests/integration/serial/main.py`](../../src/tests/integration/serial/main.py). Para ello, se debe establecer el primer argumento del constructor de la clase `Serial` con el puerto serial que se utilizará.
 
-En el test el argumento es `'/dev/ttyUSB0'` que debería funcionar sin problemas en Linux. En el caso de que utilizarse en Windows, habría que cambiarlo por `'COM3'` (eso en mi caso, pero debería verificarse en el administrador de dispositivos en que puerto está conectado el Arduino).
+Por defecto, el argumento es `'/dev/ttyUSB0'` que debería funcionar sin problemas en Linux. En el caso de Windows, habría que cambiarlo por el puerto correspondiente, por ejemplo `COM3`.
+
+> [!TIP]
+> En caso de no saber cuál es el puerto correspondiente en Windows, se puede verificar en el administrador de dispositivos en que puerto está conectado el Arduino.
 
 ### Ejecución
 
