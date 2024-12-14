@@ -2,7 +2,6 @@
 #include "serial.h"
 
 int main(void) {
-  int n = 2;
   int button = 12;
   int exit = 2;
   gpio_input(button);

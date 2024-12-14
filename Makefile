@@ -34,6 +34,7 @@ all:
 	@echo "  - twi-master-test"
 	@echo "  - twi-slave-test"
 	@echo "  - matrix-keyboard"
+	@echo "  - py-serial-test"
 	@echo ""
 	@echo "Recordar hacer make clean antes de compilar otra app."
 
@@ -44,6 +45,9 @@ twi-slave-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-slave
 	$(LINK)
 
 matrix-keyboard: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix_test.o
+	$(LINK)
+
+py-serial-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/py_serial_test.o
 	$(LINK)
 
 # Objetos:
@@ -60,6 +64,10 @@ $(BUILD_DIR)/twi_slave_test.o: src/tests/unit/twi/twi_slave_test.c
 	$(COMPILE)
 
 $(BUILD_DIR)/matrix_test.o: src/modules/matrix/matrix_test.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/py_serial_test.o: src/tests/integration/serial/py_serial_test.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
