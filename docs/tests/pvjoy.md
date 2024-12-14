@@ -23,11 +23,11 @@ Este script utiliza la biblioteca pyvjoy para simular la pulsación de un botón
 
 ### Ejecución
 
-Correr el archivo `main.py`.
-
+Correr el archivo `main.py`.  
 Si todo está correcto, en las propiedades del dispositivo vJoyDevice debería verse cómo se alternan pulsaciones en el botón 1.
 
 ---
+
 ## Referencias
 
 Este script se basa en la biblioteca pyvjoy, de [este respositorio](https://github.com/tidzo/pyvjoy).

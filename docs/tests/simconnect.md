@@ -16,21 +16,19 @@ pip install SimConnect
 
 ## Ejecución del script
 
-El script intenta establecer una conexión con Microsoft Flight Simulator y, una vez conectado, monitorea la posición del tren de aterrizaje.
-
+El script intenta establecer una conexión con Microsoft Flight Simulator y, una vez conectado, monitorea la posición del tren de aterrizaje.  
 Para ejecutar el script hay que correr el siguiente comando:
 
 ```bash
 python main.py
 ```
 
-Si Microsoft Flight Simulator no está ejecutándose, la conexión fallará. El script intentará conectarse automáticamente cada 30 segundos hasta que se logre la conexión.
-
-Una vez conectado, monitoreará el estado del tren de aterrizaje.
+> [!NOTE]
+> Si Microsoft Flight Simulator no está ejecutándose, la conexión fallará. El script intentará conectarse automáticamente cada 30 segundos hasta que se logre la conexión.
 
 ### Ejemplo de salida
 
-```bash
+```plain
 Conexión a Flight Simulator establecida.
 Tren: abajo
 Tren: abajo
@@ -43,7 +41,7 @@ Tren: arriba
 Tren: arriba
 ```
 
-> **Observación:** \
+> [!NOTE]
 > Por defecto, el valor del tren de aterrizaje es **abajo**, incluso en el menú principal del juego cuando no se está volando ningún avión.
 
 ## Estructura del código

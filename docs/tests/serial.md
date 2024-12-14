@@ -13,19 +13,14 @@ El test tiene dos partes: el programa en C que corre en el arduino y un script e
 ### Software
 
 - Python 3
-- Biblioteca `pyserial` para Python. Se puede instalar con :
-  
-    ```bash
-    pip install pyserial
-    ```
+- Biblioteca `pyserial` para Python. Se puede instalar con : `pip install pyserial`
 
 ## Uso
 
 ### Configuración del Arduino
 
-Conectar los pulsadores a los pines D2 y D12 del arduino utilizando las resistencias en configuración de pull down.
-
-Compilar el programa con el comando con `make` y flahsear con `make flash`.
+1. Conectar los pulsadores a los pines D2 y D12 del arduino utilizando las resistencias en configuración de pull down.
+2. Compilar el programa con el comando con `make` y flahsear con `make flash`.
 
 ### Configurar el puerto en Python
 
