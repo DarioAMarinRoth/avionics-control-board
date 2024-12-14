@@ -20,7 +20,7 @@ El test tiene dos partes: el programa en C que corre en el arduino y un script e
 ### Conexionado
 El armado consiste simplemente en conectar uno de los terminales de los pulsadores a los pines D2 y D12 del arduino utilizando las resistencias en configuración de pull down y el otro terminal a +5V. A continuación se muestra un esquema de conexión:
 
-[Conexionado](../schematics/py-serial.svg)
+![Conexionado](../schematics/py-serial.svg)
 
 ### Configuración del Arduino
 

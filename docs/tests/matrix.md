@@ -12,6 +12,9 @@ Las conexiones se muestran en la siguiente imagen:
 
 ![Conexionado](../schematics/matrix-test.svg)
 
+> [!WARNING]
+> Este conexionado no admite que se presionen dos botones simultáneos. Para ello, es necesario añadir un diodo por cada pulsador.
+
 ## Ejecución
 
 ### Cargar el programa
