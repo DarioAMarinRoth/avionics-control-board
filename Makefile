@@ -33,6 +33,7 @@ all:
 	@echo "Ejecute el comando 'make <app>' donde <app> es una de los siguientes opciones:"
 	@echo "  - twi-master-test"
 	@echo "  - twi-slave-test"
+	@echo "  - matrix-keyboard"
 	@echo ""
 	@echo "Recordar hacer make clean antes de compilar otra app."
 
@@ -40,6 +41,9 @@ twi-master-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi.o $(
 	$(LINK)
 
 twi-slave-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi.o $(BUILD_DIR)/twi_slave_test.o
+	$(LINK)
+
+matrix-keyboard: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix_test.o
 	$(LINK)
 
 # Objetos:
@@ -52,6 +56,10 @@ $(BUILD_DIR)/twi_master_test.o: src/tests/unit/twi/twi_master_test.c
 	$(COMPILE)
 
 $(BUILD_DIR)/twi_slave_test.o: src/tests/unit/twi/twi_slave_test.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/matrix_test.o: src/modules/matrix/matrix_test.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
