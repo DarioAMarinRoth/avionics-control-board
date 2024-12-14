@@ -11,7 +11,7 @@ Para ejecutar el test se requerirá:
 
 Las  conexiones se muestran en la siguiente imagen:
 
-![Conexionado](docs/schematics/twi-test.svg)
+![Conexionado](../schematics/twi-test.svg)
 
 ## Ejecución
 
