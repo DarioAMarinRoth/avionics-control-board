@@ -63,7 +63,7 @@ $(BUILD_DIR)/twi_slave_test.o: src/tests/unit/twi/twi_slave_test.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
-$(BUILD_DIR)/matrix_test.o: src/modules/matrix/matrix_test.c
+$(BUILD_DIR)/matrix_test.o: src/tests/unit/matrix_test.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 

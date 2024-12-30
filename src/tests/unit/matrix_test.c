@@ -1,5 +1,5 @@
-#include "gpio.h"
-#include "serial.h"
+#include "../../../include/gpio.h"
+#include "../../../include/serial.h"
 
 #define N_INPUTS 2      // Number of rows
 #define N_OUTPUTS 2     // Number of columns
