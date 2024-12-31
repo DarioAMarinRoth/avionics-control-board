@@ -11,7 +11,7 @@
 
 void main() {
 
-    master_init();
+    twi_master_init();
     serial_init();
 
     uint8_t buttons[N_INPUTS];
@@ -21,7 +21,7 @@ void main() {
 
     while (1) {
         twi_master_receive_byte(DEFAULT_SLA);
-        const uint8_t change = get_received_data();
+        const uint8_t change = twi_get_received_data();
         buttons[change] = !buttons[change];
 
         for (int i = 0; i < N_INPUTS; i++) {

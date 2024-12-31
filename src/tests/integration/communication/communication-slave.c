@@ -8,7 +8,7 @@
 void main() {
 
     matrix_init();
-    slave_init();
+    twi_slave_init();
     queue *data = get_toggle_events();
 
     while (1) {
