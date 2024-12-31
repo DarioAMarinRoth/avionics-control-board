@@ -17,6 +17,10 @@ CFLAGS = -Os -DF_CPU=$(F_CPU) -mmcu=$(MCU)
 LDFLAGS = -mmcu=$(MCU)
 FIRMWARE = imagen.hex
 
+# Objetos
+DRIVERS = $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o
+UTILS = $(BUILD_DIR)/queue.o
+
 # Misc
 INCLUDE_DIR = ./include
 BUILD_DIR = build
@@ -76,6 +80,12 @@ matrix-keyboard-2: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.
 py-serial-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/py_serial_test.o
 	$(LINK)
 
+communication-slave: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/queue.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-slave.o
+	$(LINK)
+
+communication-master: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-master.o
+	$(LINK)
+
 # Objetos:
 $(BUILD_DIR)/%.o: ./src/drivers/%.c
 	mkdir -p $(BUILD_DIR)
@@ -98,6 +108,14 @@ $(BUILD_DIR)/%.o: src/tests/unit/%.c
 	$(COMPILE)
 
 $(BUILD_DIR)/py_serial_test.o: src/tests/integration/serial/py_serial_test.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/communication-slave.o: src/tests/integration/communication/communication-slave.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/communication-master.o: src/tests/integration/communication/communication-master.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 

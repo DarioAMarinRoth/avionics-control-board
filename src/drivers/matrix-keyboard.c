@@ -7,8 +7,8 @@
 
 // VARIABLES
 
-uint8_t rows[N_ROWS] = {5, 6};
-uint8_t columns[N_COLUMNS] = {2, 3};
+uint8_t rows[N_ROWS] = ROWS;
+uint8_t columns[N_COLUMNS] = COLUMNS;
 uint8_t inputs_state[N_INPUTS];
 queue *toggle_events;
 

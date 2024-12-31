@@ -12,6 +12,8 @@
 #define N_ROWS 2                        // outputs in the scan
 #define N_COLUMNS 2                     // inputs in the scan
 #define N_INPUTS (N_ROWS * N_COLUMNS)   // Total number of inputs
+#define ROWS {5, 6}
+#define COLUMNS {8, 9}
 
 // FUNCTIONS
 
