@@ -6,7 +6,7 @@
 #define TWI_SLAVE_H
 
 #include <stdint.h>
-#include <twi-common.h>
+#include "twi-common.h"
 
 /**********************************************************************
  * TWI FUNCTIONS
@@ -17,12 +17,12 @@
  *
  * @param sla Dirección del esclavo TWI.
  */
-void sla_slave_init(uint8_t sla);
+void twi_sla_slave_init(uint8_t sla);
 
 /**
  * @brief Inicializa el esclavo TWI.
  */
-void slave_init();
+void twi_slave_init();
 
 /**
  * @brief Transmite un byte de datos desde el esclavo TWI.

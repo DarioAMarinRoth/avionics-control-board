@@ -6,7 +6,7 @@
 #define TWI_MASTER_H
 
 #include <stdint.h>
-#include <twi-common.h>
+#include "twi-common.h"
 
 
 /**********************************************************************
@@ -74,7 +74,7 @@ static void send_NACK(void);
 /**
  * @brief Inicializa el maestro TWI.
  */
-void master_init();
+void twi_master_init();
 
 /**
  * @brief Recibe un byte de datos desde un dispositivo esclavo TWI.
@@ -89,6 +89,6 @@ uint8_t twi_master_receive_byte(const uint8_t tx_sla);
  *
  * @return uint8_t Último byte de datos recibido.
  */
-uint8_t get_received_data();
+uint8_t twi_get_received_data();
 
 #endif //TWI_MASTER_H

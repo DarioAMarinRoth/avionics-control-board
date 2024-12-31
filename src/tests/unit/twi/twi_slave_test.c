@@ -3,7 +3,7 @@
 
 int main(void) {
     gpio_input(13);
-    slave_init(0);
+    twi_slave_init();
     twi_slave_transmit(1);
     twi_slave_transmit(0);
     while (1) {

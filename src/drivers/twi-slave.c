@@ -4,21 +4,21 @@
 
 #include <stdint.h>
 #include <util/twi.h>
-#include <twi-slave.h>
+#include "twi-slave.h"
 
-twi_t *twi = (twi_t *) (0xB8);
+twi_t *twi_slave = (twi_t *) (0xB8);
 
 /**********************************************************************
  * TWI FUNCTIONS
  **********************************************************************/
 
-void sla_slave_init(const uint8_t sla) {
-    twi->twar = sla << TWA0;
-    twi->twcr = ENABLE_TWI | ENABLE_ACK;
+void twi_sla_slave_init(const uint8_t sla) {
+    twi_slave->twar = sla << TWA0;
+    twi_slave->twcr = ENABLE_TWI | ENABLE_ACK;
 }
 
-void slave_init() {
-    sla_slave_init(DEFAULT_SLA);
+void twi_slave_init() {
+    twi_sla_slave_init(DEFAULT_SLA);
 }
 
 uint8_t twi_slave_transmit(const uint8_t data) {
@@ -33,7 +33,7 @@ uint8_t twi_slave_transmit(const uint8_t data) {
     if (status != TW_ST_DATA_NACK)
         return status;
 
-    twi->twcr = CLEAR_INT | ENABLE_TWI | ENABLE_ACK;    // Slave last action
+    twi_slave->twcr = CLEAR_INT | ENABLE_TWI | ENABLE_ACK;    // Slave last action
     return 0;
 }
 
@@ -42,12 +42,12 @@ uint8_t twi_slave_transmit(const uint8_t data) {
  **********************************************************************/
 
 static uint8_t get_status(void) {
-    return twi->twsr & STATUS_REG_MASK;
+    return twi_slave->twsr & STATUS_REG_MASK;
 }
 
 static uint8_t transmit(const uint8_t data) {
-    twi->twdr = data;
-    twi->twcr = CLEAR_INT | ENABLE_TWI;
+    twi_slave->twdr = data;
+    twi_slave->twcr = CLEAR_INT | ENABLE_TWI;
     while (!I2C_TRANSMISSION_COMPLETE)
         ;
     return get_status();

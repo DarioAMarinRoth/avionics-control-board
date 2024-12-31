@@ -24,7 +24,7 @@
 
 // VARIOS
 #define STATUS_REG_MASK 0xF8  // Máscara del registro de estado
-#define I2C_TRANSMISSION_COMPLETE (twi->twcr & (1 << TWINT))  // Verificar si la transmisión I2C está completa
+#define I2C_TRANSMISSION_COMPLETE (TWCR & (1 << TWINT))  // Verificar si la transmisión I2C está completa
 
 /**********************************************************************
  * ESTRUCTURA TWI
