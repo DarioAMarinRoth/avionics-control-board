@@ -77,6 +77,9 @@ matrix-keyboard-1: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.
 matrix-keyboard-2: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/matrix_test_2.o
 	$(LINK)
 
+encoder-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/encoder_test.o
+	$(LINK)
+
 py-serial-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/py_serial_test.o
 	$(LINK)
 
