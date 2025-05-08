@@ -1,4 +1,4 @@
-/* queue.h - firstid, firstkey, isempty, lastkey, nonempty		*/
+/* my_queue.h - firstid, firstkey, isempty, lastkey, nonempty		*/
 
 /* Queue structure declarations, constants, and inline functions	*/
 

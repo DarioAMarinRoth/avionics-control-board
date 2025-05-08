@@ -9,17 +9,17 @@ void main() {
 
     matrix_init();
     twi_slave_init();
-    my_queue *data = get_toggle_events();
+    queue *data = get_toggle_events();
 
     while (1) {
         scan();
-        if (f_is_empty(data)) {
+        if (is_empty(data)) {
             twi_slave_transmit(-1);
             continue;
         }
         do {
-            twi_slave_transmit(f_pop(data));
-        } while (!f_is_empty(data));
+            twi_slave_transmit(pop(data));
+        } while (!is_empty(data));
 
     }
 }

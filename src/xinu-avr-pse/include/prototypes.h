@@ -344,7 +344,7 @@ extern	syscall	ptsend(int32, umsg32);
 /* in file putc.c */
 extern	syscall	putc(did32, char);
 
-/* in file queue.c */
+/* in file my_queue.c */
 extern	pid32	enqueue(pid32, qid16);
 extern	pid32	dequeue(qid16);
 

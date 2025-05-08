@@ -2,8 +2,9 @@
 // Created by dario on 12/12/24.
 //
 
-#include "queue.h"
+#include "my_queue.h"
 #include <stdlib.h>
+
 #define NULL ((void *)0)
 
 my_node *f_create_node(uint8_t data) {

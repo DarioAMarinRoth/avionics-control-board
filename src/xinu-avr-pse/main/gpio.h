@@ -26,7 +26,7 @@
 int gpio_pin(int p, int op);
 void gpio_input(int p);
 void gpio_output(int p);
-void gpio_read(int port);
+unsigned char gpio_read(int port);
 void gpio_write(int port, unsigned char n);
 
 #endif /* GPIO_H */

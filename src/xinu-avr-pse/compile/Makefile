@@ -8,11 +8,11 @@
 #									#
 #########################################################################
 
-PLATFORM	=	-Dlgt8f328p
-HZ		=	4000000
+# PLATFORM	=	-Dlgt8f328p
+# HZ		=	4000000
 
-# PLATFORM	=	-DATMEGA
-# HZ		=	16000000
+PLATFORM	=	-DATMEGA
+HZ		=	16000000
 
 COMPILER_ROOT	=	avr-
 PNAME		=	ATMEGA328P
@@ -59,7 +59,7 @@ DEFS		= 	-DVERSION=\""Xinu AVR 0.1 RAFA\0"\"
 
 # Compiler flags
 # CFLAGS  = -DF_CPU=16000000UL -mmcu=atmega328p  -fno-builtin -c -Wall -Os ${DEFS} ${INCLUDE}
-CFLAGS  = -DF_CPU=$(HZ)UL $(PLATFORM) -mmcu=atmega328p  -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration -fno-builtin -c -Wall -Os ${DEFS} ${INCLUDE}
+CFLAGS  = -DF_CPU=$(HZ)UL $(PLATFORM) -mmcu=atmega328p -Wno-array-parameter  -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration -fno-builtin -c -Wall -Os ${DEFS} ${INCLUDE}
 # RAFA AGREGA LAS 3 de ABAJO para reducir size
 CFLAGS += -Wl,-static
 CFLAGS += -ffunction-sections
@@ -139,7 +139,7 @@ examine-header:
 
 flash:
 	avr-objcopy -O ihex -R .eeprom $(XINU) $(XINUHEX)
-	avrdude -p atmega328p -c arduino -P `ls -1 /dev/ttyUSB* /dev/ttyACM* 2>/dev/null | head -1` -b 115200 -D -U flash:w:$(XINUHEX):i 
+	avrdude -p atmega328p -c arduino -P `ls -1 /dev/ttyUSB* /dev/ttyACM* 2>/dev/null | head -1` -b 57600 -D -U flash:w:$(XINUHEX):i 
 
 
 qemu:

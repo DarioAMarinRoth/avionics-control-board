@@ -1,4 +1,4 @@
-/* queue.c - enqueue, dequeue */
+/* my_queue.c - enqueue, dequeue */
 
 #include <xinu.h>
 

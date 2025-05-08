@@ -12,13 +12,13 @@ int main(void) {
 
     while (1) {
         scan();
-        queue* states = get_toggle_events();
+        my_queue* states = get_toggle_events();
 
-        if (is_empty(states)) {
+        if (f_is_empty(states)) {
             continue;
         }
 
-        serial_put_int(pop(states), 1);
+        serial_put_int(f_pop(states), 1);
         serial_put_str("\n\r");
     }
 }
