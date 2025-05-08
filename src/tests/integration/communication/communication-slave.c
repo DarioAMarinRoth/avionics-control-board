@@ -18,7 +18,7 @@ void main() {
             continue;
         }
         do {
-            twi_slave_transmit(dequeue(data));
+            twi_slave_transmit(pop(data));
         } while (!is_empty(data));
 
     }

@@ -18,7 +18,7 @@ int main(void) {
             continue;
         }
 
-        serial_put_int(dequeue(states), 1);
+        serial_put_int(pop(states), 1);
         serial_put_str("\n\r");
     }
 }

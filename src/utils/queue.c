@@ -28,7 +28,7 @@ int is_empty(queue *q) {
     return q->head == NULL;
 }
 
-void enqueue(queue *q, uint8_t data) {
+void push(queue *q, uint8_t data) {
     node *n = create_node(data);
     if (is_empty(q)) {
         q->head = n;
@@ -46,7 +46,7 @@ int peek(queue *q) {
     return q->head->data;
 }
 
-int dequeue(queue *q) {
+int pop(queue *q) {
     if (is_empty(q)) {
         return -1;
     }
@@ -59,7 +59,7 @@ int dequeue(queue *q) {
 
 void destroy_queue(queue *q) {
     while (!is_empty(q)) {
-        dequeue(q);
+        pop(q);
     }
     free(q);
 }

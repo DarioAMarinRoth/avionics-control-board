@@ -47,7 +47,7 @@ queue *create_queue(void);
  * \param q Puntero a la cola.
  * \param data Dato a añadir a la cola.
  */
-void enqueue(queue *q, uint8_t data);
+void push(queue *q, uint8_t data);
 
 /**
  * \brief Obtiene el primer dato de la cola sin eliminarlo.
@@ -61,7 +61,7 @@ int peek(queue *q);
  * \param q Puntero a la cola.
  * \return El primer dato de la cola.
  */
-int dequeue(queue *q);
+int pop(queue *q);
 
 /**
  * \brief Verifica si la cola está vacía.
