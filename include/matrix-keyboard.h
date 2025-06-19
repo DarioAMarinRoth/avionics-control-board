@@ -7,7 +7,7 @@
 #define MATRIX_KEYBOARD_H
 
 #include <stdint.h>
-#include <queue.h>
+#include "my_queue.h"
 
 #define N_ROWS 2                        // outputs in the scan
 #define N_COLUMNS 2                     // inputs in the scan
@@ -21,7 +21,7 @@ void matrix_init();
 
 void scan();
 
-queue* get_toggle_events();
+my_queue* get_toggle_events();
 
 uint8_t* get_inputs_state();
 

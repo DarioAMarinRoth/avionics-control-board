@@ -3,19 +3,19 @@
 //
 
 #include "matrix-keyboard.h"
-#include <gpio.h>
+#include "gpio.h"
 
 // VARIABLES
 
 uint8_t rows[N_ROWS] = ROWS;
 uint8_t columns[N_COLUMNS] = COLUMNS;
 uint8_t inputs_state[N_INPUTS];
-queue *toggle_events;
+my_queue *toggle_events;
 
 // FUNCTIONS
 
 void matrix_init() {
-    toggle_events = create_queue();
+    toggle_events = f_create_queue();
 
     for (int i = 0; i < N_INPUTS; i++) {
         inputs_state[i] = 0;
@@ -36,14 +36,14 @@ void scan() {
             if (input_value == inputs_state[input]) {
                 continue;
             }
-            enqueue(toggle_events, input);
+            f_push(toggle_events, input);
             inputs_state[input] = input_value;
         }
         disable_row(rows[i]);
     }
 }
 
-queue *get_toggle_events() {
+my_queue *get_toggle_events() {
     return toggle_events;
 }
 
