@@ -39,6 +39,7 @@ void f_push(my_queue *q, uint8_t data) {
         q->tail->next = n;
         q->tail = n;
     }
+    q->size = q->size + 1;
 }
 
 int f_peek(my_queue *q) {
@@ -56,6 +57,7 @@ int f_pop(my_queue *q) {
     int data = n->data;
     q->head = n->next;
     f_destroy_node(n);
+    q->size = q->size - 1;
     return data;
 }
 
@@ -64,4 +66,8 @@ void f_destroy_queue(my_queue *q) {
         f_pop(q);
     }
     free(q);
+}
+
+uint8_t f_get_size(my_queue *q) {
+    return q->size;
 }

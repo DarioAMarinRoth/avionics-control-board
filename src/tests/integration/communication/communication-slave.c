@@ -9,7 +9,9 @@ void main() {
 
     matrix_init();
     twi_slave_init();
-    queue *data = get_toggle_events();
+    my_queue *data = get_toggle_events();
+    data.create_queue();
+
 
     while (1) {
         scan();

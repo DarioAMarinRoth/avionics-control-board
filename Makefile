@@ -71,10 +71,10 @@ twi-master-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-mast
 twi-slave-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/twi_slave_test.o
 	$(LINK)
 
-matrix-keyboard-1: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/matrix_test_1.o
+matrix-keyboard-1: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/matrix_test_1.o
 	$(LINK)
 
-matrix-keyboard-2: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/matrix_test_2.o
+matrix-keyboard-2: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/matrix_test_2.o
 	$(LINK)
 
 encoder-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/encoder_test.o
@@ -86,7 +86,13 @@ py-serial-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/py_serial
 communication-slave: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/queue.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-slave.o
 	$(LINK)
 
-communication-master: $(BUILD_DIR)/queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-master.o
+communication-master: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-master.o
+	$(LINK)
+
+receive-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/receive-queue.o
+	$(LINK)
+
+send-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/send-queue.o
 	$(LINK)
 
 # Objetos:
@@ -119,6 +125,14 @@ $(BUILD_DIR)/communication-slave.o: src/tests/integration/communication/communic
 	$(COMPILE)
 
 $(BUILD_DIR)/communication-master.o: src/tests/integration/communication/communication-master.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/receive-queue.o: src/tests/integration/communication/receive-queue.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/send-queue.o: src/tests/integration/communication/send-queue.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
