@@ -21,6 +21,7 @@ typedef struct my_node {
 typedef struct my_queue {
     my_node *head; /**< Puntero al primer nodo de la cola. */
     my_node *tail; /**< Puntero al último nodo de la cola. */
+    uint8_t size; /**< Tamaño de la cola (número de nodos). */
 } my_queue;
 
 /**
@@ -75,5 +76,12 @@ int f_is_empty(my_queue *q);
  * \param q Puntero a la cola a destruir.
  */
 void f_destroy_queue(my_queue *q);
+
+/**
+ * \brief Obtiene el tamaño de la cola.
+ * \param q Puntero a la cola.
+ * \return El tamaño de la cola (número de nodos).
+ */
+uint8_t f_get_size(my_queue *q);
 
 #endif //QUEUE_H
