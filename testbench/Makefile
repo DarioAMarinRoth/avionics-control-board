@@ -116,7 +116,7 @@ $(BUILD_DIR)/%.o: src/tests/unit/%.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
-$(BUILD_DIR)/py_serial_test.o: src/tests/integration/serial/py_serial_test.c
+$(BUILD_DIR)/py_serial_test.o: src/tests/integration/serial/set_sim_state.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
