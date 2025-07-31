@@ -39,7 +39,7 @@ all:
 	@echo "  - twi-slave-test"
 	@echo "  - matrix-keyboard-1"
 	@echo "  - matrix-keyboard-2"
-	@echo "  - py-serial-test"
+	@echo "  - set-py-state"
 	@echo ""
 	@echo "Recordar hacer make clean antes de compilar otra app."
 	@echo "Para mas información sobre cada aplicación ejecute el comando 'make help'."
@@ -80,7 +80,10 @@ matrix-keyboard-2: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/seri
 encoder-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/encoder_test.o
 	$(LINK)
 
-py-serial-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/py_serial_test.o
+set-py-state: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/set_sim_state.o
+	$(LINK)
+
+get-py-state: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/get_sim_state.o
 	$(LINK)
 
 communication-slave: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/queue.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-slave.o
@@ -116,7 +119,11 @@ $(BUILD_DIR)/%.o: src/tests/unit/%.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
-$(BUILD_DIR)/py_serial_test.o: src/tests/integration/serial/set_sim_state.c
+$(BUILD_DIR)/set_sim_state.o: src/tests/integration/serial/set_sim_state.c
+	mkdir -p $(BUILD_DIR)
+	$(COMPILE)
+
+$(BUILD_DIR)/get_sim_state.o: src/tests/integration/serial/get_sim_state.c
 	mkdir -p $(BUILD_DIR)
 	$(COMPILE)
 
