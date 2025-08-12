@@ -5,3 +5,26 @@
 *.hex
 *.elf
 build/
+
+# KiCad backups and temporary files
+*.bak
+*.pro-bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*-backup/
+*-backups/
+fp-info-cache
+*.cache
+*.drl
+*.gbr
+*.gtl
+*.gbl
+*.gts
+*.gbs
+*.gko
+*.gto
+*.gbo
+*.gml
+*.cmp
+*.sol
+*.plc
