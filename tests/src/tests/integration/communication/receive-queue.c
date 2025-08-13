@@ -19,13 +19,13 @@ void main() {
     const uint8_t data_size = twi_get_received_data();
     for (int i = 0; i < data_size; ++i) {
         twi_master_receive_byte(DEFAULT_SLA);
-        f_push(data, twi_get_received_data());
+        f_add(data, twi_get_received_data());
     }
 
 
     serial_put_str("Los datos recibidos son:\n\r");
     for (int i = 0; i < data_size; ++i) {
-        serial_put_int(f_pop(data), 1);
+        serial_put_int(f_poll(data), 1);
         serial_put_str("\n\r");
     }
 

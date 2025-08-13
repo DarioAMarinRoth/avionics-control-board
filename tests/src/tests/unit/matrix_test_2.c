@@ -18,7 +18,7 @@ int main(void) {
             continue;
         }
 
-        serial_put_int(f_pop(states), 1);
+        serial_put_int(f_poll(states), 1);
         serial_put_str("\n\r");
     }
 }

@@ -36,7 +36,7 @@ void scan() {
             if (input_value == inputs_state[input]) {
                 continue;
             }
-            f_push(toggle_events, input);
+            f_add(toggle_events, input);
             inputs_state[input] = input_value;
         }
         disable_row(rows[i]);

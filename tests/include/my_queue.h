@@ -48,7 +48,7 @@ my_queue *f_create_queue(void);
  * \param q Puntero a la cola.
  * \param data Dato a añadir a la cola.
  */
-void f_push(my_queue *q, uint8_t data);
+void f_add(my_queue *q, uint8_t data);
 
 /**
  * \brief Obtiene el primer dato de la cola sin eliminarlo.
@@ -62,7 +62,7 @@ int f_peek(my_queue *q);
  * \param q Puntero a la cola.
  * \return El primer dato de la cola.
  */
-int f_pop(my_queue *q);
+int f_poll(my_queue *q);
 
 /**
  * \brief Verifica si la cola está vacía.
