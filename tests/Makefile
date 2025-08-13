@@ -22,8 +22,15 @@ DRIVERS = $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-master.o $(
 UTILS = $(BUILD_DIR)/queue.o
 
 # Misc
-INCLUDE_DIR = ./include
-BUILD_DIR = build
+INCLUDE_DIR := include
+BUILD_DIR := build
+VPATH := src/drivers \
+		 src/utils \
+		 src/tests/unit \
+		 src/tests/unit/twi \
+		 src/tests/integration/serial \
+		 src/tests/integration/communication
+
 APP = program
 COMPILE = $(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 LINK = $(CC) $(LDFLAGS) -o $(BUILD_DIR)/$(APP) $^
@@ -86,7 +93,7 @@ set-py-state: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/set_sim_sta
 get-py-state: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/get_sim_state.o
 	$(LINK)
 
-communication-slave: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/queue.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-slave.o
+communication-slave: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-slave.o
 	$(LINK)
 
 communication-master: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/matrix-keyboard.o $(BUILD_DIR)/communication-master.o
@@ -98,49 +105,11 @@ receive-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-mast
 send-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/send-queue.o
 	$(LINK)
 
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
 # Objetos:
-$(BUILD_DIR)/%.o: ./src/drivers/%.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/%.o: ./src/utils/%.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/twi_master_test.o: src/tests/unit/twi/twi_master_test.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/twi_slave_test.o: src/tests/unit/twi/twi_slave_test.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/%.o: src/tests/unit/%.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/set_sim_state.o: src/tests/integration/serial/set_sim_state.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/get_sim_state.o: src/tests/integration/serial/get_sim_state.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/communication-slave.o: src/tests/integration/communication/communication-slave.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/communication-master.o: src/tests/integration/communication/communication-master.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/receive-queue.o: src/tests/integration/communication/receive-queue.c
-	mkdir -p $(BUILD_DIR)
-	$(COMPILE)
-
-$(BUILD_DIR)/send-queue.o: src/tests/integration/communication/send-queue.c
-	mkdir -p $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(COMPILE)
 
 # Misc:
