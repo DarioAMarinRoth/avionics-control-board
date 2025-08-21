@@ -72,6 +72,8 @@ help:
 	@printf "\033[1;36m- py-serial-test: \033[0m"
 	@echo "- Verifica el correcto funcionamiento de la comunicación serial entre el arduino y los scripts que corren en la PC. El programa permite imprimir un mensaje en la terminal utilizando python al accionar un pulsador conectado al arduino."
 
+all:
+
 twi-master-test: $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/twi-master.o $(BUILD_DIR)/twi_master_test.o
 	$(LINK)
 
@@ -103,6 +105,9 @@ receive-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-mast
 	$(LINK)
 
 send-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/send-queue.o
+	$(LINK)
+
+send-state: $(BUILD_DIR)/sync_state.o
 	$(LINK)
 
 $(BUILD_DIR):
