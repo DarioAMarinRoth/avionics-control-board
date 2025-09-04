@@ -19,7 +19,7 @@ void main() {
 
     var_map state[] = {
         {0,red_led, 0 },
-        {0,green_led, 0}
+        {1,green_led, 0}
     };
 
     for (int i = 0; i < STATE_SIZE; ++i) {
