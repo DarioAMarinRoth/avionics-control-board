@@ -18,8 +18,8 @@ void main() {
     uint16_t target_value;
 
     var_map state[] = {
-        {red_led, 0 },
-        {green_led, 0}
+        {0,red_led, 0 },
+        {0,green_led, 0}
     };
 
     for (int i = 0; i < STATE_SIZE; ++i) {
