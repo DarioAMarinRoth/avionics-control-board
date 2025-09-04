@@ -107,7 +107,10 @@ receive-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-mast
 send-queue: $(BUILD_DIR)/my_queue.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/twi-slave.o $(BUILD_DIR)/send-queue.o
 	$(LINK)
 
-send-state: $(BUILD_DIR)/sync_state.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o
+sync-state-1: $(BUILD_DIR)/sync_state.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o
+	$(LINK)
+
+sync-state-2: $(BUILD_DIR)/sync_state_2.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/misc.o
 	$(LINK)
 
 $(BUILD_DIR):

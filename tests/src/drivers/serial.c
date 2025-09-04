@@ -38,6 +38,7 @@ void serial_put_str(char *str) {
         serial_put_char(*str);
         str++;
     }
+    serial_put_char('\n');
 }
 
 char *serial_get_str(char *buffer, int max_string_length) {
