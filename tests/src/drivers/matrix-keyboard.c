@@ -61,6 +61,6 @@ static void enable_row(const int row) {
 }
 
 static void disable_row(const int row) {
-    gpio_write(row, OFF);
+    gpio_pin(row, OFF);
     gpio_input(row);
 }
