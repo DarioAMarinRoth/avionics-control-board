@@ -5,7 +5,7 @@
 *.hex
 *.elf
 build/
-__pycache__
+__pycache__/
 # KiCad backups and temporary files
 *.bak
 *.pro-bak
