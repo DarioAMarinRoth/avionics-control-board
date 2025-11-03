@@ -1,42 +1,21 @@
-//
-// Created by dario on 6/19/25.
-//
-
-#include <stdint.h>
 #include <xinu.h>
+#include <stdint.h>
 
-#include "my_queue.h"
-#include "twi-master.h"
+
 #include "serial.h"
 #include "gpio.h"
+#include "buffer.h"
 
-void receive_queue() {
-    my_queue *data = f_create_queue();
+#define TRAMA_SIZE 3
 
-    serial_init();
-    serial_put_str("Comenzando...\n\r");
-    twi_master_init();
-    while(1) {
+sid32 produced;
+sid32 consumed;
+sid32 new_byte;
+buffer_t buf;
 
-        twi_master_receive_byte(DEFAULT_SLA);
-        serial_put_str("El tamaño de la cola se recibió correctamente.\n\r");
-        const uint8_t data_size = twi_get_received_data();
-        for (int i = 0; i < data_size; ++i) {
-            twi_master_receive_byte(DEFAULT_SLA);
-            f_push(data, twi_get_received_data());
-        }
-        serial_put_str("Los datos recibidos son:\n\r");
-        for (int i = 0; i < data_size; ++i) {
-            serial_put_int(f_pop(data), 1);
-        }
-        serial_put_str("\n\r");
-        sleepms(500);
-    }
-}
+uint16_t result = 0;
 
-void main() {
-    resume(create(receive_queue, 256, 20, "rxq",0));
-
+void dummy() {
     gpio_output(13);
     while(1){
         gpio_pin(13,ON);
@@ -44,6 +23,39 @@ void main() {
         gpio_pin(13,OFF);
         sleepms(500);
     }
-
 }
 
+void log_data() {
+    while(1) {
+        wait(produced);
+        serial_put_str("Nueva información recibida\n\r");
+        serial_put_int(result, 2);
+        serial_put_str("\n\r");
+        result = 0;
+        signal(consumed);
+    }
+}
+
+
+void main() {
+    consumed = semcreate(1);
+    produced = semcreate(0);
+    new_byte = semcreate(0);
+    buffer_init(buf);
+
+    serial_init();
+    resume(create(dummy,256,20,"led",0));
+    resume(create(log_data, 256, 20, "txd",0));
+    
+    while (1) {
+        wait(consumed);
+        for (uint8_t i = 0; i < TRAMA_SIZE ; i++) {
+            wait(new_byte);
+            char byte = buffer_get(buf);
+            if (byte >= '0' && byte <= '9') {
+                result = result * 10 + (byte - '0');
+            }
+        }
+        signal(produced);
+    }
+}

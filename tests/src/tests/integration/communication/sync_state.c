@@ -29,11 +29,11 @@ void main() {
 
     while (true) {
         target_id = serial_get_uint(digits);
-        serial_put_str("ID recibido: ");
+        serial_put_str("ID recibido: \r");
         serial_put_int(target_id, digits);
         serial_put_str("\n\r");
         target_value = serial_get_uint(digits);
-        serial_put_str("Valor recibido: ");
+        serial_put_str("Valor recibido: \r");
         serial_put_int(target_value, digits);
         serial_put_str("\n\r");
         state[target_id].value = target_value;

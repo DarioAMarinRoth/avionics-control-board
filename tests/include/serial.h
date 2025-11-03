@@ -5,6 +5,10 @@
  **********************************************************************/
 
 #include <stdint.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
+#include "buffer.h"
+#include "int_communication_pc_2_mcu.h"
 
 #ifndef _SERIAL_H
 #define _SERIAL_H

@@ -1,3 +1,3 @@
-from playground.get_state import main
+from playground.send_state import main
 
 main()

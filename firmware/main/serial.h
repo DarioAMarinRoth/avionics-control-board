@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 
+
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
@@ -67,7 +68,7 @@ typedef struct {
     uint8_t baud_rate_l; /* ubrr0l baud rate low */;
     uint8_t baud_rate_h; /* ubrr0h baud rate high */
     uint8_t data_io; /* udr0 I/O data */
-} volatile uart_t;
+}volatile uart_t;
 
 void serial_init(void);
 
