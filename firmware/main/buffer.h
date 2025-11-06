@@ -12,8 +12,8 @@ typedef struct {
     uint8_t n;      // Elementos presentes dentro del buffer
 } buffer_t;
 
-void buffer_init(buffer_t buf);
-void buffer_put(buffer_t buf, char n);
-char buffer_get(buffer_t buf);
+void buffer_init(buffer_t *buf);
+void buffer_put(buffer_t *buf, char n);
+char buffer_get(buffer_t *buf);
 
 #endif	/* BUFFER_H */

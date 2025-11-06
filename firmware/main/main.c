@@ -1,5 +1,7 @@
 #include <xinu.h>
 #include <stdint.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
 
 
 #include "serial.h"
@@ -41,7 +43,7 @@ void main() {
     consumed = semcreate(1);
     produced = semcreate(0);
     new_byte = semcreate(0);
-    buffer_init(buf);
+    buffer_init(&buf);
 
     serial_init();
     resume(create(dummy,256,20,"led",0));
@@ -51,7 +53,9 @@ void main() {
         wait(consumed);
         for (uint8_t i = 0; i < TRAMA_SIZE ; i++) {
             wait(new_byte);
-            char byte = buffer_get(buf);
+            cli();
+            char byte = buffer_get(&buf);
+            sei();
             if (byte >= '0' && byte <= '9') {
                 result = result * 10 + (byte - '0');
             }

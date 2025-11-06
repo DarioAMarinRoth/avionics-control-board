@@ -110,6 +110,6 @@ uint16_t serial_get_uint(int digits) {
 }
 
 ISR(USART_RX_vect) {
-    buffer_put(buf, serial_port->data_io);
+    buffer_put(&buf, serial_port->data_io);
     signal(new_byte);
 }

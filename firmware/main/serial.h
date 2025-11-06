@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 
-#ifndef _SERIAL_H
-#define _SERIAL_H
+#ifndef _SERIAL_APP_H
+#define _SERIAL_APP_H
 
 #define USART_BAUDRATE 9600
 #define BAUD_PRESCALE  (((F_CPU/(USART_BAUDRATE*16UL)))-1)
@@ -90,4 +90,4 @@ char serial_recibido(void);
 
 uint16_t serial_get_uint(int digits);
 
-#endif /* _SERIAL_H */
+#endif /* _SERIAL_APP_H */
