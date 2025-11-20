@@ -8,9 +8,8 @@
 #include <stdint.h>
 
 typedef struct {
-    uint16_t id;
-    uint16_t pin;
-    uint16_t value;
+    uint8_t pin;
+    uint8_t value;
 } var_map;
 
 #endif //MODELS_H

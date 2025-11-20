@@ -7,6 +7,7 @@
 
 #include "gpio_map.h"
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 
 #define A0 14
 #define A1 15
@@ -14,8 +15,7 @@
 #define A3 17
 #define A4 18
 #define A5 19
-
-static const gpio_t pinmap[] = {
+static const gpio_t pinmap[] PROGMEM = {
     { &DDRD, &PORTD, &PIND, 0 },
     { &DDRD, &PORTD, &PIND, 1 },
     { &DDRD, &PORTD, &PIND, 2 },
