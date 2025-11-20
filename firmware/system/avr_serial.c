@@ -50,13 +50,13 @@ void kserial_put_char (char outputChar)
 
 char value;
 
-/*
- * RX interrupt service rutine
- */
- ISR(USART_RX_vect){
- 	value = UDR0;             /* read UART register into value */
-//	// ttyhandler (1, value, 0);
- }
+// /*
+//  * RX interrupt service rutine
+//  */
+//  ISR(USART_RX_vect){
+//  	value = UDR0;             /* read UART register into value */
+// //	// ttyhandler (1, value, 0);
+//  }
 
 char kserial_get_char(void)
 {

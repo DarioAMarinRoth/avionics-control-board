@@ -5,7 +5,6 @@
  * Configuracion: 9600bps, 8bits data, 1bit stop, sin bit de paridad
  *
  **********************************************************************/
-
 #include "serial.h"
 
 /* Puntero a la estructura de los registros del periférico */
@@ -21,6 +20,10 @@ void serial_init(void) {
 
     /* Activar la recepcion y transmicion */
     serial_port->status_control_b = RX_E | TX_E;
+
+    // Interrupciones
+    SREG |= (1 << SREG_I);  // Interrupciones globales
+    serial_port->status_control_b |= (1 << RXCIE0); // Interrupciones de rx
 }
 
 void serial_put_char(char c) {
@@ -83,30 +86,6 @@ void serial_put_int(int value, int num_digits) {
     return serial_put_long_int(value, num_digits);
 }
 
-void serial_put_double(double value, int int_digits, int frac_digits) {
-    long int int_value = (long int) value;
-    double frac_value = value - int_value;
-    int frac_digit = 0;
-
-    serial_put_long_int(int_value, int_digits);
-    serial_put_char('.');
-
-    if (frac_digits > MAX_DOUBLE_PRECISION)
-        frac_digits = MAX_DOUBLE_PRECISION;
-    else if (frac_digits < 1)
-        frac_digits = 1;
-
-    if (frac_value < 0)
-        frac_value = -frac_value;
-
-    for (int i = 0; i < frac_digits; i++) {
-        frac_value *= 10;
-        frac_digit = (int) frac_value;
-        serial_put_char(48 + (char) frac_value);
-        frac_value -= frac_digit;
-    }
-}
-
 uint16_t serial_get_uint(int digits) {
     const int size = digits + 1; // +1 para el carácter nulo
     char buffer[size];
@@ -120,4 +99,8 @@ uint16_t serial_get_uint(int digits) {
         }
     }
     return result;
+}
+
+ISR(USART_RX_vect) {
+    buffer_put(buf, serial_port->data_io);
 }

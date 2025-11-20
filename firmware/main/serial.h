@@ -6,8 +6,9 @@
 
 #include <stdint.h>
 
-#ifndef _SERIAL_H
-#define _SERIAL_H
+
+#ifndef _SERIAL_APP_H
+#define _SERIAL_APP_H
 
 #define USART_BAUDRATE 9600
 #define BAUD_PRESCALE  (((F_CPU/(USART_BAUDRATE*16UL)))-1)
@@ -67,7 +68,7 @@ typedef struct {
     uint8_t baud_rate_l; /* ubrr0l baud rate low */;
     uint8_t baud_rate_h; /* ubrr0h baud rate high */
     uint8_t data_io; /* udr0 I/O data */
-} volatile uart_t;
+}volatile uart_t;
 
 void serial_init(void);
 
@@ -89,4 +90,4 @@ char serial_recibido(void);
 
 uint16_t serial_get_uint(int digits);
 
-#endif /* _SERIAL_H */
+#endif /* _SERIAL_APP_H */
