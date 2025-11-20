@@ -3,54 +3,87 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-
 #include "serial.h"
 #include "gpio.h"
 #include "buffer.h"
+#include "models.h"
 
 #define TRAMA_SIZE 3
+#define OUTPUTS_SIZE 2
+#define INPUTS_SIZE 1
 
-sid32 produced;
-sid32 consumed;
+sid32 new_word;
+sid32 word_consumed;
 sid32 new_byte;
 buffer_t buf;
 
+var_map outputs[] = {     // MODIFICAR LA MARCRO OUTPUT_SIZE SI SE AGREGAN MÁS SALIDAS
+    {0, 13, 0},    
+    {1, 12, 0}
+};
+
+var_map inputs[] = {     // MODIFICAR LA MARCRO INPUT_SIZE SI SE AGREGAN MÁS ENTRADAS
+    {0, 2, 0},    
+};
+
 uint16_t result = 0;
 
-void dummy() {
-    gpio_output(13);
+void set_outputs() {
     while(1){
-        gpio_pin(13,ON);
-        sleepms(500);
-        gpio_pin(13,OFF);
-        sleepms(500);
+        for (int i = 0; i < OUTPUTS_SIZE; ++i) {
+            gpio_pin(outputs[i].pin, outputs[i].value);
+        }
+        sleepms(13);
     }
 }
 
-void log_data() {
+void update_outputs() {
+    uint16_t id;
     while(1) {
-        wait(produced);
-        serial_put_str("Nueva información recibida\n\r");
-        serial_put_int(result, 2);
-        serial_put_str("\n\r");
+        wait(new_word);
+        id = result;
         result = 0;
-        signal(consumed);
+        signal(word_consumed);
+        wait(new_word);
+        outputs[id].value = result;
+        result = 0;
+        signal(word_consumed);
     }
 }
 
+void get_inputs() {
+    while(1) {
+        outputs[1].value = gpio_pin(inputs[0].pin, GET);
+        sleepms(13);
+    }
+}
 
-void main() {
-    consumed = semcreate(1);
-    produced = semcreate(0);
+void init_board() {
+    word_consumed = semcreate(1);
+    new_word = semcreate(0);
     new_byte = semcreate(0);
-    buffer_init(&buf);
 
+    resume(create(set_outputs, 64 ,20,"led",0));
+    resume(create(update_outputs, 64, 20, "rxs",0));
+    resume(create(get_inputs, 64, 20, "i2c",0));
+
+    buffer_init(&buf);
     serial_init();
-    resume(create(dummy,256,20,"led",0));
-    resume(create(log_data, 256, 20, "txd",0));
+
+    for (uint8_t i = 0; i < OUTPUTS_SIZE; i++) {
+        gpio_output(outputs[i].pin);
+    }
     
+    for (uint8_t i = 0; i < INPUTS_SIZE; i++) {
+        gpio_input(inputs[i].pin);
+    }
+}
+
+int main() {
+    init_board();
+
     while (1) {
-        wait(consumed);
+        wait(word_consumed);
         for (uint8_t i = 0; i < TRAMA_SIZE ; i++) {
             wait(new_byte);
             cli();
@@ -60,6 +93,7 @@ void main() {
                 result = result * 10 + (byte - '0');
             }
         }
-        signal(produced);
+        signal(new_word);
     }
+    return 0;
 }

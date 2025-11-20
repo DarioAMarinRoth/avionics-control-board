@@ -407,8 +407,6 @@ Discarded input sections
  .text          0x00000000        0x0 binaries/gpio.o
  .data          0x00000000        0x0 binaries/gpio.o
  .bss           0x00000000        0x0 binaries/gpio.o
- .text.gpio_input
-                0x00000000       0x92 binaries/gpio.o
  .text.gpio_read
                 0x00000000       0x1c binaries/gpio.o
  .text.gpio_write
@@ -419,10 +417,18 @@ Discarded input sections
  .text          0x00000000        0x0 binaries/serial.o
  .data          0x00000000        0x0 binaries/serial.o
  .bss           0x00000000        0x0 binaries/serial.o
+ .text.serial_put_char
+                0x00000000       0x12 binaries/serial.o
  .text.serial_get_char
                 0x00000000       0x12 binaries/serial.o
+ .text.serial_put_str
+                0x00000000       0x20 binaries/serial.o
  .text.serial_get_str
                 0x00000000       0x46 binaries/serial.o
+ .text.serial_put_long_int
+                0x00000000       0xe6 binaries/serial.o
+ .text.serial_put_int
+                0x00000000       0x1a binaries/serial.o
  .text.serial_get_uint
                 0x00000000       0x88 binaries/serial.o
  .data          0x00000000        0x0 binaries/ctxsw.o
@@ -1095,32 +1101,30 @@ END GROUP
  .text.gpio_pin
                 0x00001f02      0x126 binaries/gpio.o
                 0x00001f02                gpio_pin
+ .text.gpio_input
+                0x00002028       0x92 binaries/gpio.o
+                0x00002028                gpio_input
  .text.gpio_output
-                0x00002028       0x9c binaries/gpio.o
-                0x00002028                gpio_output
- .text.dummy    0x000020c4       0x30 binaries/main.o
-                0x000020c4                dummy
- .text.log_data
-                0x000020f4       0x38 binaries/main.o
-                0x000020f4                log_data
+                0x000020ba       0x9c binaries/gpio.o
+                0x000020ba                gpio_output
+ .text.set_outputs
+                0x00002156       0x30 binaries/main.o
+                0x00002156                set_outputs
+ .text.get_inputs
+                0x00002186       0x22 binaries/main.o
+                0x00002186                get_inputs
+ .text.update_outputs
+                0x000021a8       0x5e binaries/main.o
+                0x000021a8                update_outputs
+ .text.init_board
+                0x00002206       0xd8 binaries/main.o
+                0x00002206                init_board
  .text.startup.main
-                0x0000212c       0xf2 binaries/main.o
-                0x0000212c                main
+                0x000022de       0x62 binaries/main.o
+                0x000022de                main
  .text.serial_init
-                0x0000221e       0x2c binaries/serial.o
-                0x0000221e                serial_init
- .text.serial_put_char
-                0x0000224a       0x12 binaries/serial.o
-                0x0000224a                serial_put_char
- .text.serial_put_str
-                0x0000225c       0x1c binaries/serial.o
-                0x0000225c                serial_put_str
- .text.serial_put_long_int
-                0x00002278       0xde binaries/serial.o
-                0x00002278                serial_put_long_int
- .text.serial_put_int
-                0x00002356       0x16 binaries/serial.o
-                0x00002356                serial_put_int
+                0x00002340       0x2c binaries/serial.o
+                0x00002340                serial_init
  .text.__vector_18
                 0x0000236c       0x5e binaries/serial.o
                 0x0000236c                __vector_18
@@ -1199,7 +1203,7 @@ END GROUP
  *(.jumptables*)
                 0x00002a8a                        _etext = .
 
-.data           0x00800100       0x78 load address 0x00002a8a
+.data           0x00800100       0x70 load address 0x00002a8a
                 0x00800100                        PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -1231,91 +1235,94 @@ END GROUP
                 0x00800116                DDRB
  .data.PINB     0x00800118        0x2 binaries/gpio.o
                 0x00800118                PINB
+ .data.inputs   0x0080011a        0x6 binaries/main.o
+                0x0080011a                inputs
+ .data.outputs  0x00800120        0xc binaries/main.o
+                0x00800120                outputs
  .data.serial_port
-                0x0080011a        0x2 binaries/serial.o
-                0x0080011a                serial_port
+                0x0080012c        0x2 binaries/serial.o
+                0x0080012c                serial_port
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.nulluser.str1.1
-                0x0080011c       0x5b binaries/initialize.o
+                0x0080012e       0x41 binaries/initialize.o
                                  0x2f (size before relaxing)
  .rodata.naminit.str1.1
-                0x00800177        0x7 binaries/naminit.o
- .rodata.log_data.str1.1
-                0x00800177       0x21 binaries/main.o
- .rodata.main.str1.1
-                0x00800177        0x8 binaries/main.o
+                0x0080016f        0x7 binaries/naminit.o
+ .rodata.init_board.str1.1
+                0x0080016f        0xc binaries/main.o
  *(.gnu.linkonce.r*)
-                0x00800198                        . = ALIGN (0x2)
- *fill*         0x00800177        0x1 
-                0x00800178                        _edata = .
-                0x00800178                        PROVIDE (__data_end = .)
+                0x0080017c                        . = ALIGN (0x2)
+ *fill*         0x0080016f        0x1 
+                0x00800170                        _edata = .
+                0x00800170                        PROVIDE (__data_end = .)
 
-.bss            0x00800178      0x345
-                0x00800178                        PROVIDE (__bss_start = .)
+.bss            0x00800170      0x345
+                0x00800170                        PROVIDE (__bss_start = .)
  *(.bss)
  *(.bss*)
- .bss.nbpools   0x00800178        0x4 binaries/bufinit.o
-                0x00800178                nbpools
- .bss.preempt   0x0080017c        0x4 binaries/clkinit.o
-                0x0080017c                preempt
- .bss.sleepq    0x00800180        0x2 binaries/clkinit.o
-                0x00800180                sleepq
+ .bss.nbpools   0x00800170        0x4 binaries/bufinit.o
+                0x00800170                nbpools
+ .bss.preempt   0x00800174        0x4 binaries/clkinit.o
+                0x00800174                preempt
+ .bss.sleepq    0x00800178        0x2 binaries/clkinit.o
+                0x00800178                sleepq
  .bss.count1000
-                0x00800182        0x4 binaries/clkinit.o
-                0x00800182                count1000
- .bss.clktime   0x00800186        0x4 binaries/clkinit.o
-                0x00800186                clktime
+                0x0080017a        0x4 binaries/clkinit.o
+                0x0080017a                count1000
+ .bss.clktime   0x0080017e        0x4 binaries/clkinit.o
+                0x0080017e                clktime
  .bss.nextpid.0
-                0x0080018a        0x4 binaries/create.o
- .bss.currpid   0x0080018e        0x4 binaries/initialize.o
-                0x0080018e                currpid
- .bss.prcount   0x00800192        0x4 binaries/initialize.o
-                0x00800192                prcount
- .bss.memlist   0x00800196        0x6 binaries/initialize.o
-                0x00800196                memlist
- .bss.semtab    0x0080019c       0x38 binaries/initialize.o
-                0x0080019c                semtab
- .bss.proctab   0x008001d4      0x1c7 binaries/initialize.o
-                0x008001d4                proctab
- .bss.maxheap   0x0080039b        0x2 binaries/meminit.o
-                0x0080039b                maxheap
- .bss.minheap   0x0080039d        0x2 binaries/meminit.o
-                0x0080039d                minheap
- .bss.queuetab  0x0080039f       0x96 binaries/queue.o
-                0x0080039f                queuetab
+                0x00800182        0x4 binaries/create.o
+ .bss.currpid   0x00800186        0x4 binaries/initialize.o
+                0x00800186                currpid
+ .bss.prcount   0x0080018a        0x4 binaries/initialize.o
+                0x0080018a                prcount
+ .bss.memlist   0x0080018e        0x6 binaries/initialize.o
+                0x0080018e                memlist
+ .bss.semtab    0x00800194       0x38 binaries/initialize.o
+                0x00800194                semtab
+ .bss.proctab   0x008001cc      0x1c7 binaries/initialize.o
+                0x008001cc                proctab
+ .bss.maxheap   0x00800393        0x2 binaries/meminit.o
+                0x00800393                maxheap
+ .bss.minheap   0x00800395        0x2 binaries/meminit.o
+                0x00800395                minheap
+ .bss.queuetab  0x00800397       0x96 binaries/queue.o
+                0x00800397                queuetab
  .bss.readylist
-                0x00800435        0x2 binaries/ready.o
-                0x00800435                readylist
- .bss.Defer     0x00800437        0x5 binaries/resched.o
-                0x00800437                Defer
+                0x0080042d        0x2 binaries/ready.o
+                0x0080042d                readylist
+ .bss.Defer     0x0080042f        0x5 binaries/resched.o
+                0x0080042f                Defer
  .bss.nextsem.0
-                0x0080043c        0x2 binaries/semcreate.o
- .bss.nnames    0x0080043e        0x4 binaries/naminit.o
-                0x0080043e                nnames
- .bss.nametab   0x00800442       0x54 binaries/naminit.o
-                0x00800442                nametab
- .bss.result    0x00800496        0x2 binaries/main.o
-                0x00800496                result
- .bss.buf       0x00800498       0x1f binaries/main.o
-                0x00800498                buf
- .bss.new_byte  0x008004b7        0x2 binaries/main.o
-                0x008004b7                new_byte
- .bss.consumed  0x008004b9        0x2 binaries/main.o
-                0x008004b9                consumed
- .bss.produced  0x008004bb        0x2 binaries/main.o
-                0x008004bb                produced
+                0x00800434        0x2 binaries/semcreate.o
+ .bss.nnames    0x00800436        0x4 binaries/naminit.o
+                0x00800436                nnames
+ .bss.nametab   0x0080043a       0x54 binaries/naminit.o
+                0x0080043a                nametab
+ .bss.result    0x0080048e        0x2 binaries/main.o
+                0x0080048e                result
+ .bss.buf       0x00800490       0x1f binaries/main.o
+                0x00800490                buf
+ .bss.new_byte  0x008004af        0x2 binaries/main.o
+                0x008004af                new_byte
+ .bss.word_consumed
+                0x008004b1        0x2 binaries/main.o
+                0x008004b1                word_consumed
+ .bss.new_word  0x008004b3        0x2 binaries/main.o
+                0x008004b3                new_word
  *(COMMON)
-                0x008004bd                        PROVIDE (__bss_end = .)
+                0x008004b5                        PROVIDE (__bss_end = .)
                 0x00002a8a                        __data_load_start = LOADADDR (.data)
-                0x00002b02                        __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00002afa                        __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008004bd        0x0
+.noinit         0x008004b5        0x0
                 [!provide]                        PROVIDE (__noinit_start = .)
  *(.noinit .noinit.* .gnu.linkonce.n.*)
                 [!provide]                        PROVIDE (__noinit_end = .)
-                0x008004bd                        _end = .
+                0x008004b5                        _end = .
                 [!provide]                        PROVIDE (__heap_start = .)
                 0x00000000                        __flmap_init_label = DEFINED (__flmap_noinit_start)?__flmap_noinit_start:0x0
                 0x00000000                        __flmap = DEFINED (__flmap)?__flmap:0x0

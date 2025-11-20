@@ -27,3 +27,15 @@ def main():
                 nano.write(var_value.encode())
             except:
                 pass
+
+# def main():
+#     baudrate = 9600
+#     nano = serial.Serial('/dev/ttyUSB0', baudrate, timeout=1)
+#
+#     while True:
+#         var_id = int(get_data(nano))
+#         print("información recibida:", flush=True)
+#         print("id:", var_id, flush=True)
+#
+# def get_data(device):
+#     return device.readline().decode().strip()
