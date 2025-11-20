@@ -113,6 +113,9 @@ sync-state-1: $(BUILD_DIR)/sync_state.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.
 sync-state-2: $(BUILD_DIR)/sync_state_2.o $(BUILD_DIR)/gpio.o $(BUILD_DIR)/serial.o $(BUILD_DIR)/misc.o
 	$(LINK)
 
+serial-int-test: $(BUILD_DIR)/serial.o $(BUILD_DIR)/int_communication_pc_2_mcu.o $(BUILD_DIR)/buffer.o
+	$(LINK)
+
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 

@@ -26,7 +26,7 @@ my_queue *f_create_queue(void) {
     return q;
 }
 
-int f_is_empty(my_queue *q) {
+uint8_t f_is_empty(my_queue *q) {
     return q->head == NULL;
 }
 
@@ -41,19 +41,19 @@ void f_push(my_queue *q, uint8_t data) {
     }
 }
 
-int f_peek(my_queue *q) {
+uint8_t f_peek(my_queue *q) {
     if (f_is_empty(q)) {
         return -1;
     }
     return q->head->data;
 }
 
-int f_pop(my_queue *q) {
+uint8_t f_pop(my_queue *q) {
     if (f_is_empty(q)) {
         return -1;
     }
     my_node *n = q->head;
-    int data = n->data;
+    uint8_t data = n->data;
     q->head = n->next;
     f_destroy_node(n);
     return data;

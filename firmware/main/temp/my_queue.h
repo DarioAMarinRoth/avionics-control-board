@@ -54,21 +54,21 @@ void f_push(my_queue *q, uint8_t data);
  * \param q Puntero a la cola.
  * \return El primer dato de la cola.
  */
-int f_peek(my_queue *q);
+uint8_t f_peek(my_queue *q);
 
 /**
  * \brief Elimina y obtiene el primer dato de la cola.
  * \param q Puntero a la cola.
  * \return El primer dato de la cola.
  */
-int f_pop(my_queue *q);
+uint8_t f_pop(my_queue *q);
 
 /**
  * \brief Verifica si la cola está vacía.
  * \param q Puntero a la cola.
  * \return 1 si la cola está vacía, 0 en caso contrario.
  */
-int f_is_empty(my_queue *q);
+uint8_t f_is_empty(my_queue *q);
 
 /**
  * \brief Destruye una cola y libera la memoria asociada.
