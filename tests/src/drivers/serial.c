@@ -6,6 +6,7 @@
  *
  **********************************************************************/
 #include "serial.h"
+#include "buffer.h"
 
 /* Puntero a la estructura de los registros del periférico */
 uart_t *serial_port = (uart_t *) (0xc0);
