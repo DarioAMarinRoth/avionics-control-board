@@ -5,7 +5,6 @@
 
 #include "buffer.h"
 
-
 extern buffer_t buf;
 extern sid32 new_byte;
 

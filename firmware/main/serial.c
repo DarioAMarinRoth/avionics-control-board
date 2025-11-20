@@ -5,43 +5,28 @@
  * Configuracion: 9600bps, 8bits data, 1bit stop, sin bit de paridad
  *
  **********************************************************************/
-#include <xinu.h>
- 
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-
+#include "serial.h"
 #include "buffer.h"
 #include "main.h"
-#include "serial.h"
-
-/* Puntero a la estructura de los registros del periférico */
-uart_t *serial_port = (uart_t *) (0xc0);
 
 void serial_init(void) {
-    /* Configurar los registros High y Low con BAUD_PRESCALE */
-    serial_port->baud_rate_h = (unsigned char) (BAUD_PRESCALE >> 8);
-    serial_port->baud_rate_l = (unsigned char) (BAUD_PRESCALE);
-
-    /* Configurar un frame de 8bits, con un bit de paridad y bit de stop */
-    serial_port->status_control_c = CHAR_SIZE | STOP_BITS | PARITY_MODE;
-
-    /* Activar la recepcion y transmicion */
-    serial_port->status_control_b = RX_E | TX_E;
-
-    // Interrupciones
-    SREG |= (1 << SREG_I);  // Interrupciones globales
-    serial_port->status_control_b |= (1 << RXCIE0); // Interrupciones de rx
+    UBRR0H = (unsigned char) (BAUD_PRESCALE >> 8);
+    UBRR0L = (unsigned char) (BAUD_PRESCALE);
+    UCSR0C = CHAR_SIZE | STOP_BITS | PARITY_MODE;
+    UCSR0B = RX_E | TX_E | RX_INT_EN;
 }
 
 void serial_put_char(char c) {
-    while (!(serial_port->status_control_a & READY_TO_WRITE));
-    serial_port->data_io = c;
+    while (!(UCSR0A & READY_TO_WRITE));
+    UDR0 = c;
 }
 
 char serial_get_char(void) {
-    while (!((serial_port->status_control_a) & (READY_TO_READ)));
-    return (serial_port->data_io);
+    while (!(UCSR0A & READY_TO_READ));
+    return UDR0;
 }
 
 void serial_put_str(char *str) {
@@ -53,7 +38,6 @@ void serial_put_str(char *str) {
 }
 
 char *serial_get_str(char *buffer, int max_string_length) {
-    int i = 0;
     char c;
 
     for (int i = 0; i < max_string_length; ++i) {
@@ -70,7 +54,8 @@ void serial_put_long_int(long int value, int num_digits) {
 
     if (value == 0) {
         return serial_put_char('0');
-    } else if (value < 0) {
+    }
+    if (value < 0) {
         serial_put_char('-');
         value = -value; // Usar valor absoluto
     }
@@ -110,6 +95,6 @@ uint16_t serial_get_uint(int digits) {
 }
 
 ISR(USART_RX_vect) {
-    buffer_put(&buf, serial_port->data_io);
+    buffer_put(&buf, UDR0);
     signal(new_byte);
 }

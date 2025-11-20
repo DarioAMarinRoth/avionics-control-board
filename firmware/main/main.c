@@ -1,12 +1,12 @@
-#include <xinu.h>
+
 #include <stdint.h>
 #include <avr/interrupt.h>
-#include <avr/io.h>
 
-#include "serial.h"
 #include "gpio.h"
 #include "buffer.h"
 #include "models.h"
+#include "serial.h"
+#include "main.h"
 
 #define TRAMA_SIZE 3
 #define OUTPUTS_SIZE 2
@@ -95,5 +95,4 @@ int main() {
         }
         signal(new_word);
     }
-    return 0;
 }
