@@ -12,9 +12,9 @@
 #define OUTPUTS_SIZE 2
 #define INPUTS_SIZE 1
 
+sid32 new_byte;
 sid32 new_word;
 sid32 word_consumed;
-sid32 new_byte;
 buffer_t buf;
 my_queue *changed_inputs;
 
@@ -80,7 +80,7 @@ void init_board() {
     word_consumed = semcreate(1);
     new_word = semcreate(0);
     new_byte = semcreate(0);
-    //
+
     resume(create(set_outputs, 72 ,20,"led",0));
     resume(create(update_outputs, 96, 20, "rxs",0));
     resume(create(get_inputs, 64, 20, "i2c",0));
