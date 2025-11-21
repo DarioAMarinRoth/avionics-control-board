@@ -7,6 +7,8 @@ Este repositorio contiene el desarrollo del proyecto final de la materia optativ
 > [!IMPORTANT]  
 > El proyecto aún se encuentra en desarrollo y actualmente no es funcional.
 
+[Documentación técnica](docs/wiki/main.md)
+
 ## Características
 
 - Posibilidad de conectar hasta más de 36 entradas.
@@ -27,6 +29,7 @@ Este repositorio contiene el desarrollo del proyecto final de la materia optativ
 - Cables
 
 ### Software
+
 - **GNU Make**: Herramienta de automatización de compilación.
 - **avr-gcc**: Compilador para microcontroladores AVR.
 - **avrdude**: Herramienta para programar microcontroladores AVR.
