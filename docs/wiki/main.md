@@ -63,7 +63,7 @@ Para esto, se cuentan con dos tareas; [`main()`](#main) que se encarga de recibi
 5. [`update_outputs()`](#update-outputs) guardará internamente la palabra recién creada como el ID de la salida a modificar, activará el semáforo [`word_consumed`](#word_consumed) y esperará una segunda palabra correspondiente al valor de la salida.
 6. Cuando la nueva palabra esté disponible, se actualizará la salida correspondiente del vector de salidas para que puedan ser actualizadas en el próximo barrido de [`set_outputs()`](#set-outputs).
 
----
+## Resumen
 
 ### Tareas
 
