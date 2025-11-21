@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <xinu.h>
 
-#include "../my_queue.h"
+#include "my_queue.h"
 #include "twi-master.h"
 #include "serial.h"
 #include "gpio.h"

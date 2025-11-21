@@ -4,12 +4,11 @@
 #include <xinu.h>
 
 #include "buffer.h"
-#include "my_queue.h"
 
 /**
  * Buffer circular donde se almacenan los bytes recibidos por serial de la PC.
  */
-extern buffer_t buf;
+extern buffer_t rx_buf;
 
 extern sid32 new_byte;
 
