@@ -58,16 +58,17 @@ int main() {
 }
 
 void get_inputs() {
-    while (1) {
-        serial_put_str("\n\rSolicitando información al esclavo\n\r");
+    twi_master_init();
+    while(1) {
         twi_master_receive_byte(DEFAULT_SLA);
-        serial_put_str("\n\rInofrmación recibida\n\r");
         const uint8_t data_size = twi_get_received_data();
-        for (uint8_t i = 0; i < data_size; ++i) {
-            twi_master_receive_byte(DEFAULT_SLA);
-            buffer_put(&tx_buf, twi_get_received_data());
+        uint8_t data;
+        twi_master_receive_byte(DEFAULT_SLA);
+        data = twi_get_received_data();
+        for (int i = 0; i < data_size; ++i) {
+            buffer_put(&tx_buf, data);
         }
-        sleepms(13);
+        sleepms(500);
     }
 }
 
@@ -105,7 +106,7 @@ void setup() {
 
     serial_init();
     buffer_put(&tx_buf, 0); // Solución momentánea para purgar el serial
-    twi_master_init();
+    // twi_master_init();
 
     for (uint8_t i = 0; i < OUTPUTS_SIZE; i++) {
         gpio_output(outputs[i].pin);

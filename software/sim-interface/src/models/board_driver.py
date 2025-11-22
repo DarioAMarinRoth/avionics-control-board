@@ -21,15 +21,19 @@ class BoardDriver:
         self.thead_tx = threading.Thread(target=self._action)
 
     def start(self):
+        print("Empezando...")
         self._reset_board()
         self.thead_tx.start()
         self.thead_rx.start()
 
     def _listen(self):
+        # print("Escuchando..")
         self._flush_startup()
         while True:
-            data = int(self.nano.readline().decode().strip())
-            print("Recibiendo: ", data)
+            raw_data = self.nano.readline()
+            # print("Crudo:", raw_data)
+            data = int(raw_data.decode().strip())
+            # print("Recibiendo: ", data)
             self.new_inputs.put(data)  # solo encolar
 
     def _action(self):
@@ -38,14 +42,16 @@ class BoardDriver:
             self.state[i].toggle()
             var_id = self._to_string(self.state[i].id)
             var_value = self._to_string(self.state[i].value)
-            print("Enviando: ", var_id, var_value)
+            # print("Enviando: ", var_id, var_value)
             self.nano.write(var_id.encode())
             self.nano.write(var_value.encode())
 
     def _flush_startup(self):
         while True:
             line = self.nano.readline()
-            if line == b'\r\xe10\n':  # Una palabra que se imprime la primera vez que se envía algo del buffer. Será cosa de xinu
+            print(line)
+            if line == b'0\n' or line == b'\r\x8a0\n':  # Purga
+                print("Purgado")
                 break
 
     def _reset_board(self):

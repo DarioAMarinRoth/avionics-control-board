@@ -27,15 +27,11 @@ int main() {
         if (current_value == prev_value) {
             continue;
         }
+        prev_value = current_value;
         f_add(events_queue, 0);
-        serial_put_str("Transmitiendo el tamaño de la cola\n\r");
         twi_slave_transmit(f_get_size(events_queue));
-        serial_put_str("Tamaño de la cola transmitido\n\r");
         while (!f_is_empty(events_queue)) {
-            serial_put_str("Información a transmitir: ");
             data = f_poll(events_queue);
-            serial_put_int(data, 1);
-            serial_put_str("\n\r");
             twi_slave_transmit(data);
         }
     }

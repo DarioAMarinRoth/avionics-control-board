@@ -1128,13 +1128,13 @@ END GROUP
                 0x000020cc       0x9c binaries/gpio.o
                 0x000020cc                gpio_output
  .text.get_inputs
-                0x00002168       0x4a binaries/main.o
+                0x00002168       0x4c binaries/main.o
                 0x00002168                get_inputs
  .text.set_outputs
-                0x000021b2       0x24 binaries/main.o
-                0x000021b2                set_outputs
- .text.setup    0x000021d6       0xc6 binaries/main.o
-                0x000021d6                setup
+                0x000021b4       0x24 binaries/main.o
+                0x000021b4                set_outputs
+ .text.setup    0x000021d8       0xc4 binaries/main.o
+                0x000021d8                setup
  .text.startup.main
                 0x0000229c       0x66 binaries/main.o
                 0x0000229c                main
@@ -1243,7 +1243,7 @@ END GROUP
  *(.jumptables*)
                 0x00002b8c                        _etext = .
 
-.data           0x00800100       0xac load address 0x00002b8c
+.data           0x00800100       0x6a load address 0x00002b8c
                 0x00800100                        PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -1284,83 +1284,81 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.nulluser.str1.1
-                0x00800128       0x83 binaries/initialize.o
+                0x00800128       0x41 binaries/initialize.o
                                  0x2f (size before relaxing)
  .rodata.naminit.str1.1
-                0x008001ab        0x7 binaries/naminit.o
- .rodata.get_inputs.str1.1
-                0x008001ab       0x42 binaries/main.o
+                0x00800169        0x7 binaries/naminit.o
  .rodata.setup.str1.1
-                0x008001ab        0xc binaries/main.o
+                0x00800169        0xc binaries/main.o
  *(.gnu.linkonce.r*)
-                0x008001ee                        . = ALIGN (0x2)
- *fill*         0x008001ab        0x1 
-                0x008001ac                        _edata = .
-                0x008001ac                        PROVIDE (__data_end = .)
+                0x00800176                        . = ALIGN (0x2)
+ *fill*         0x00800169        0x1 
+                0x0080016a                        _edata = .
+                0x0080016a                        PROVIDE (__data_end = .)
 
-.bss            0x008001ac      0x35f
-                0x008001ac                        PROVIDE (__bss_start = .)
+.bss            0x0080016a      0x35f
+                0x0080016a                        PROVIDE (__bss_start = .)
  *(.bss)
  *(.bss*)
- .bss.nbpools   0x008001ac        0x4 binaries/bufinit.o
-                0x008001ac                nbpools
- .bss.preempt   0x008001b0        0x4 binaries/clkinit.o
-                0x008001b0                preempt
- .bss.sleepq    0x008001b4        0x2 binaries/clkinit.o
-                0x008001b4                sleepq
+ .bss.nbpools   0x0080016a        0x4 binaries/bufinit.o
+                0x0080016a                nbpools
+ .bss.preempt   0x0080016e        0x4 binaries/clkinit.o
+                0x0080016e                preempt
+ .bss.sleepq    0x00800172        0x2 binaries/clkinit.o
+                0x00800172                sleepq
  .bss.count1000
-                0x008001b6        0x4 binaries/clkinit.o
-                0x008001b6                count1000
- .bss.clktime   0x008001ba        0x4 binaries/clkinit.o
-                0x008001ba                clktime
+                0x00800174        0x4 binaries/clkinit.o
+                0x00800174                count1000
+ .bss.clktime   0x00800178        0x4 binaries/clkinit.o
+                0x00800178                clktime
  .bss.nextpid.0
-                0x008001be        0x4 binaries/create.o
- .bss.currpid   0x008001c2        0x4 binaries/initialize.o
-                0x008001c2                currpid
- .bss.prcount   0x008001c6        0x4 binaries/initialize.o
-                0x008001c6                prcount
- .bss.memlist   0x008001ca        0x6 binaries/initialize.o
-                0x008001ca                memlist
- .bss.semtab    0x008001d0       0x38 binaries/initialize.o
-                0x008001d0                semtab
- .bss.proctab   0x00800208      0x1c7 binaries/initialize.o
-                0x00800208                proctab
- .bss.maxheap   0x008003cf        0x2 binaries/meminit.o
-                0x008003cf                maxheap
- .bss.minheap   0x008003d1        0x2 binaries/meminit.o
-                0x008003d1                minheap
- .bss.queuetab  0x008003d3       0x96 binaries/queue.o
-                0x008003d3                queuetab
+                0x0080017c        0x4 binaries/create.o
+ .bss.currpid   0x00800180        0x4 binaries/initialize.o
+                0x00800180                currpid
+ .bss.prcount   0x00800184        0x4 binaries/initialize.o
+                0x00800184                prcount
+ .bss.memlist   0x00800188        0x6 binaries/initialize.o
+                0x00800188                memlist
+ .bss.semtab    0x0080018e       0x38 binaries/initialize.o
+                0x0080018e                semtab
+ .bss.proctab   0x008001c6      0x1c7 binaries/initialize.o
+                0x008001c6                proctab
+ .bss.maxheap   0x0080038d        0x2 binaries/meminit.o
+                0x0080038d                maxheap
+ .bss.minheap   0x0080038f        0x2 binaries/meminit.o
+                0x0080038f                minheap
+ .bss.queuetab  0x00800391       0x96 binaries/queue.o
+                0x00800391                queuetab
  .bss.readylist
-                0x00800469        0x2 binaries/ready.o
-                0x00800469                readylist
- .bss.Defer     0x0080046b        0x5 binaries/resched.o
-                0x0080046b                Defer
+                0x00800427        0x2 binaries/ready.o
+                0x00800427                readylist
+ .bss.Defer     0x00800429        0x5 binaries/resched.o
+                0x00800429                Defer
  .bss.nextsem.0
-                0x00800470        0x2 binaries/semcreate.o
- .bss.nnames    0x00800472        0x4 binaries/naminit.o
-                0x00800472                nnames
- .bss.nametab   0x00800476       0x54 binaries/naminit.o
-                0x00800476                nametab
- .bss.tx_buf    0x008004ca       0x1f binaries/main.o
-                0x008004ca                tx_buf
- .bss.rx_buf    0x008004e9       0x1f binaries/main.o
-                0x008004e9                rx_buf
- .bss.new_byte  0x00800508        0x2 binaries/main.o
-                0x00800508                new_byte
+                0x0080042e        0x2 binaries/semcreate.o
+ .bss.nnames    0x00800430        0x4 binaries/naminit.o
+                0x00800430                nnames
+ .bss.nametab   0x00800434       0x54 binaries/naminit.o
+                0x00800434                nametab
+ .bss.tx_buf    0x00800488       0x1f binaries/main.o
+                0x00800488                tx_buf
+ .bss.rx_buf    0x008004a7       0x1f binaries/main.o
+                0x008004a7                rx_buf
+ .bss.new_byte  0x008004c6        0x2 binaries/main.o
+                0x008004c6                new_byte
  .bss.twi_received_byte
-                0x0080050a        0x1 binaries/twi-master.o
-                0x0080050a                twi_received_byte
+                0x008004c8        0x1 binaries/twi-master.o
+                0x008004c8                twi_received_byte
  *(COMMON)
-                0x0080050b                        PROVIDE (__bss_end = .)
+                0x008004c9                        PROVIDE (__bss_end = .)
                 0x00002b8c                        __data_load_start = LOADADDR (.data)
-                0x00002c38                        __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00002bf6                        __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080050b        0x0
+.noinit         0x008004c9        0x0
                 [!provide]                        PROVIDE (__noinit_start = .)
  *(.noinit .noinit.* .gnu.linkonce.n.*)
                 [!provide]                        PROVIDE (__noinit_end = .)
-                0x0080050b                        _end = .
+                0x008004c9                        _end = .
                 [!provide]                        PROVIDE (__heap_start = .)
                 0x00000000                        __flmap_init_label = DEFINED (__flmap_noinit_start)?__flmap_noinit_start:0x0
                 0x00000000                        __flmap = DEFINED (__flmap)?__flmap:0x0
