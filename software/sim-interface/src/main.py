@@ -1,3 +1,4 @@
-from playground.send_state import main
+from models.board_driver import BoardDriver
 
-main()
+bd = BoardDriver("/dev/ttyUSB0")
+bd.start()
