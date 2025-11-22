@@ -53,8 +53,6 @@ int main() {
             }
         }
         outputs[id].value = value;
-        serial_put_int(id,1);
-        serial_put_int(value, 1);
     }
 }
 
@@ -105,6 +103,7 @@ void setup() {
     buffer_init(&tx_buf);
 
     serial_init();
+    buffer_put(&tx_buf, 0); // Solución momentánea para purgar el serial
 
     for (uint8_t i = 0; i < OUTPUTS_SIZE; i++) {
         gpio_output(outputs[i].pin);

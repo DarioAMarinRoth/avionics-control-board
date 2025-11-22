@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#include "twi-master.h"
+#include "../twi-master.h"
 #include "matrix-keyboard.h"
 #include "serial.h"
 
