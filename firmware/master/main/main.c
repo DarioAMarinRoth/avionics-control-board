@@ -6,6 +6,7 @@
 #include "models.h"
 #include "serial.h"
 #include "main.h"
+#include "twi-master.h"
 
 #define TRAMA_SIZE 3
 #define OUTPUTS_SIZE 6
@@ -57,14 +58,14 @@ int main() {
 }
 
 void get_inputs() {
-    // Cuando esté implementado el i2c simplemente se agregan las ids al buffer.
-    uint8_t previous_value = 0;
-    uint8_t current_value;
     while (1) {
-        current_value = gpio_pin(2, GET);
-        if (current_value != previous_value) {
-            previous_value = current_value;
-            buffer_put(&tx_buf, 0); // 0 es el id del pulsador. Es el valor que vendría del i2c.
+        serial_put_str("\n\rSolicitando información al esclavo\n\r");
+        twi_master_receive_byte(DEFAULT_SLA);
+        serial_put_str("\n\rInofrmación recibida\n\r");
+        const uint8_t data_size = twi_get_received_data();
+        for (uint8_t i = 0; i < data_size; ++i) {
+            twi_master_receive_byte(DEFAULT_SLA);
+            buffer_put(&tx_buf, twi_get_received_data());
         }
         sleepms(13);
     }
@@ -104,6 +105,7 @@ void setup() {
 
     serial_init();
     buffer_put(&tx_buf, 0); // Solución momentánea para purgar el serial
+    twi_master_init();
 
     for (uint8_t i = 0; i < OUTPUTS_SIZE; i++) {
         gpio_output(outputs[i].pin);

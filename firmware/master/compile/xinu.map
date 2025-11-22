@@ -430,6 +430,9 @@ Discarded input sections
                 0x00000000       0x1a binaries/serial.o
  .text.serial_get_uint
                 0x00000000       0x88 binaries/serial.o
+ .text          0x00000000        0x0 binaries/twi-master.o
+ .data          0x00000000        0x0 binaries/twi-master.o
+ .bss           0x00000000        0x0 binaries/twi-master.o
  .data          0x00000000        0x0 binaries/ctxsw.o
  .bss           0x00000000        0x0 binaries/ctxsw.o
  .text          0x00000000        0x0 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_mulsi3.o)
@@ -760,6 +763,7 @@ LOAD binaries/buffer.o
 LOAD binaries/gpio.o
 LOAD binaries/main.o
 LOAD binaries/serial.o
+LOAD binaries/twi-master.o
 LOAD binaries/ctxsw.o
 START GROUP
 LOAD /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a
@@ -867,7 +871,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x2ad2
+.text           0x00000000     0x2b8c
  *(.vectors)
  .vectors       0x00000000       0x68 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x00000000                __vectors
@@ -1124,84 +1128,93 @@ END GROUP
                 0x000020cc       0x9c binaries/gpio.o
                 0x000020cc                gpio_output
  .text.get_inputs
-                0x00002168       0x28 binaries/main.o
+                0x00002168       0x4a binaries/main.o
                 0x00002168                get_inputs
  .text.set_outputs
-                0x00002190       0x24 binaries/main.o
-                0x00002190                set_outputs
- .text.setup    0x000021b4       0xc4 binaries/main.o
-                0x000021b4                setup
+                0x000021b2       0x24 binaries/main.o
+                0x000021b2                set_outputs
+ .text.setup    0x000021d6       0xc6 binaries/main.o
+                0x000021d6                setup
  .text.startup.main
-                0x00002278       0x66 binaries/main.o
-                0x00002278                main
+                0x0000229c       0x66 binaries/main.o
+                0x0000229c                main
  .text.f_to_string
-                0x000022de       0x44 binaries/main.o
-                0x000022de                f_to_string
+                0x00002302       0x44 binaries/main.o
+                0x00002302                f_to_string
  .text.send_inputs
-                0x00002322       0x3e binaries/main.o
-                0x00002322                send_inputs
+                0x00002346       0x3e binaries/main.o
+                0x00002346                send_inputs
  .text.serial_init
-                0x00002360       0x18 binaries/serial.o
-                0x00002360                serial_init
+                0x00002384       0x18 binaries/serial.o
+                0x00002384                serial_init
  .text.serial_put_char
-                0x00002378        0xe binaries/serial.o
-                0x00002378                serial_put_char
+                0x0000239c        0xe binaries/serial.o
+                0x0000239c                serial_put_char
  .text.serial_put_str
-                0x00002386       0x1c binaries/serial.o
-                0x00002386                serial_put_str
+                0x000023aa       0x1c binaries/serial.o
+                0x000023aa                serial_put_str
  .text.__vector_18
-                0x000023a2       0x58 binaries/serial.o
-                0x000023a2                __vector_18
+                0x000023c6       0x58 binaries/serial.o
+                0x000023c6                __vector_18
+ .text.twi_get_received_data
+                0x0000241e        0x6 binaries/twi-master.o
+                0x0000241e                twi_get_received_data
+ .text.twi_master_init
+                0x00002424       0x14 binaries/twi-master.o
+                0x00002424                twi_master_init
+ .text.twi_master_receive_byte
+                0x00002438       0x7c binaries/twi-master.o
+                0x00002438                twi_master_receive_byte
  .text.libgcc.div
-                0x000023fa       0x18 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodqi4.o)
-                0x000023fa                __udivmodqi4
+                0x000024b4       0x18 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodqi4.o)
+                0x000024b4                __udivmodqi4
  .text.libgcc.div
-                0x00002412       0x26 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_divmodhi4.o)
-                0x00002412                __divmodhi4
-                0x00002412                _div
+                0x000024cc       0x26 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_divmodhi4.o)
+                0x000024cc                __divmodhi4
+                0x000024cc                _div
  .text.libgcc.div
-                0x00002438       0x28 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_divmodsi4.o)
-                0x00002438                __divmodsi4
+                0x000024f2       0x28 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_divmodsi4.o)
+                0x000024f2                __divmodsi4
  .text.libgcc.div
-                0x00002460       0x10 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_negsi2.o)
-                0x00002460                __negsi2
+                0x0000251a       0x10 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_negsi2.o)
+                0x0000251a                __negsi2
  .text.libgcc.prologue
-                0x00002470       0x38 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_prologue.o)
-                0x00002470                __prologue_saves__
+                0x0000252a       0x38 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_prologue.o)
+                0x0000252a                __prologue_saves__
  .text.libgcc.prologue
-                0x000024a8       0x36 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_epilogue.o)
-                0x000024a8                __epilogue_restores__
+                0x00002562       0x36 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_epilogue.o)
+                0x00002562                __epilogue_restores__
  .text.libgcc.div
-                0x000024de       0x28 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodhi4.o)
-                0x000024de                __udivmodhi4
+                0x00002598       0x28 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodhi4.o)
+                0x00002598                __udivmodhi4
  .text.libgcc.div
-                0x00002506       0x44 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodsi4.o)
-                0x00002506                __udivmodsi4
+                0x000025c0       0x44 /usr/lib/gcc/avr/15.1.0/avr5/libgcc.a(_udivmodsi4.o)
+                0x000025c0                __udivmodsi4
  .text.avr-libc
-                0x0000254a       0x1e /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strncpy_P.o)
-                0x0000254a                strncpy_P
+                0x00002604       0x1e /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strncpy_P.o)
+                0x00002604                strncpy_P
  .text.avr-libc
-                0x00002568        0xe /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(memset.o)
-                0x00002568                memset
+                0x00002622        0xe /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(memset.o)
+                0x00002622                memset
  .text.avr-libc
-                0x00002576       0x5a /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vsnprintf.o)
-                0x00002576                vsnprintf
+                0x00002630       0x5a /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vsnprintf.o)
+                0x00002630                vsnprintf
  .text.avr-libc
-                0x000025d0      0x3ba /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vfprintf_std.o)
-                0x000025d0                vfprintf
+                0x0000268a      0x3ba /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vfprintf_std.o)
+                0x0000268a                vfprintf
  .text.avr-libc
-                0x0000298a       0x16 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strnlen_P.o)
-                0x0000298a                strnlen_P
+                0x00002a44       0x16 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strnlen_P.o)
+                0x00002a44                strnlen_P
  .text.avr-libc
-                0x000029a0       0x16 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strnlen.o)
-                0x000029a0                strnlen
+                0x00002a5a       0x16 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(strnlen.o)
+                0x00002a5a                strnlen
  .text.avr-libc
-                0x000029b6       0x60 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(fputc.o)
-                0x000029b6                fputc
+                0x00002a70       0x60 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(fputc.o)
+                0x00002a70                fputc
  .text.avr-libc
-                0x00002a16       0xbc /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(ultoa_invert.o)
-                0x00002a16                __ultoa_invert
-                0x00002ad2                        . = ALIGN (0x2)
+                0x00002ad0       0xbc /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(ultoa_invert.o)
+                0x00002ad0                __ultoa_invert
+                0x00002b8c                        . = ALIGN (0x2)
  *(.fini9)
  *(.fini9)
  *(.fini8)
@@ -1225,12 +1238,12 @@ END GROUP
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x00002ad2                        . = ALIGN (0x2)
+                0x00002b8c                        . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
-                0x00002ad2                        _etext = .
+                0x00002b8c                        _etext = .
 
-.data           0x00800100       0x68 load address 0x00002ad2
+.data           0x00800100       0xac load address 0x00002b8c
                 0x00800100                        PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -1264,82 +1277,90 @@ END GROUP
                 0x00800118                PINB
  .data.outputs  0x0080011a        0xc binaries/main.o
                 0x0080011a                outputs
+ .data.twi_master
+                0x00800126        0x2 binaries/twi-master.o
+                0x00800126                twi_master
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.nulluser.str1.1
-                0x00800126       0x41 binaries/initialize.o
+                0x00800128       0x83 binaries/initialize.o
                                  0x2f (size before relaxing)
  .rodata.naminit.str1.1
-                0x00800167        0x7 binaries/naminit.o
+                0x008001ab        0x7 binaries/naminit.o
+ .rodata.get_inputs.str1.1
+                0x008001ab       0x42 binaries/main.o
  .rodata.setup.str1.1
-                0x00800167        0xc binaries/main.o
+                0x008001ab        0xc binaries/main.o
  *(.gnu.linkonce.r*)
-                0x00800174                        . = ALIGN (0x2)
- *fill*         0x00800167        0x1 
-                0x00800168                        _edata = .
-                0x00800168                        PROVIDE (__data_end = .)
+                0x008001ee                        . = ALIGN (0x2)
+ *fill*         0x008001ab        0x1 
+                0x008001ac                        _edata = .
+                0x008001ac                        PROVIDE (__data_end = .)
 
-.bss            0x00800168      0x35e
-                0x00800168                        PROVIDE (__bss_start = .)
+.bss            0x008001ac      0x35f
+                0x008001ac                        PROVIDE (__bss_start = .)
  *(.bss)
  *(.bss*)
- .bss.nbpools   0x00800168        0x4 binaries/bufinit.o
-                0x00800168                nbpools
- .bss.preempt   0x0080016c        0x4 binaries/clkinit.o
-                0x0080016c                preempt
- .bss.sleepq    0x00800170        0x2 binaries/clkinit.o
-                0x00800170                sleepq
+ .bss.nbpools   0x008001ac        0x4 binaries/bufinit.o
+                0x008001ac                nbpools
+ .bss.preempt   0x008001b0        0x4 binaries/clkinit.o
+                0x008001b0                preempt
+ .bss.sleepq    0x008001b4        0x2 binaries/clkinit.o
+                0x008001b4                sleepq
  .bss.count1000
-                0x00800172        0x4 binaries/clkinit.o
-                0x00800172                count1000
- .bss.clktime   0x00800176        0x4 binaries/clkinit.o
-                0x00800176                clktime
+                0x008001b6        0x4 binaries/clkinit.o
+                0x008001b6                count1000
+ .bss.clktime   0x008001ba        0x4 binaries/clkinit.o
+                0x008001ba                clktime
  .bss.nextpid.0
-                0x0080017a        0x4 binaries/create.o
- .bss.currpid   0x0080017e        0x4 binaries/initialize.o
-                0x0080017e                currpid
- .bss.prcount   0x00800182        0x4 binaries/initialize.o
-                0x00800182                prcount
- .bss.memlist   0x00800186        0x6 binaries/initialize.o
-                0x00800186                memlist
- .bss.semtab    0x0080018c       0x38 binaries/initialize.o
-                0x0080018c                semtab
- .bss.proctab   0x008001c4      0x1c7 binaries/initialize.o
-                0x008001c4                proctab
- .bss.maxheap   0x0080038b        0x2 binaries/meminit.o
-                0x0080038b                maxheap
- .bss.minheap   0x0080038d        0x2 binaries/meminit.o
-                0x0080038d                minheap
- .bss.queuetab  0x0080038f       0x96 binaries/queue.o
-                0x0080038f                queuetab
+                0x008001be        0x4 binaries/create.o
+ .bss.currpid   0x008001c2        0x4 binaries/initialize.o
+                0x008001c2                currpid
+ .bss.prcount   0x008001c6        0x4 binaries/initialize.o
+                0x008001c6                prcount
+ .bss.memlist   0x008001ca        0x6 binaries/initialize.o
+                0x008001ca                memlist
+ .bss.semtab    0x008001d0       0x38 binaries/initialize.o
+                0x008001d0                semtab
+ .bss.proctab   0x00800208      0x1c7 binaries/initialize.o
+                0x00800208                proctab
+ .bss.maxheap   0x008003cf        0x2 binaries/meminit.o
+                0x008003cf                maxheap
+ .bss.minheap   0x008003d1        0x2 binaries/meminit.o
+                0x008003d1                minheap
+ .bss.queuetab  0x008003d3       0x96 binaries/queue.o
+                0x008003d3                queuetab
  .bss.readylist
-                0x00800425        0x2 binaries/ready.o
-                0x00800425                readylist
- .bss.Defer     0x00800427        0x5 binaries/resched.o
-                0x00800427                Defer
+                0x00800469        0x2 binaries/ready.o
+                0x00800469                readylist
+ .bss.Defer     0x0080046b        0x5 binaries/resched.o
+                0x0080046b                Defer
  .bss.nextsem.0
-                0x0080042c        0x2 binaries/semcreate.o
- .bss.nnames    0x0080042e        0x4 binaries/naminit.o
-                0x0080042e                nnames
- .bss.nametab   0x00800432       0x54 binaries/naminit.o
-                0x00800432                nametab
- .bss.tx_buf    0x00800486       0x1f binaries/main.o
-                0x00800486                tx_buf
- .bss.rx_buf    0x008004a5       0x1f binaries/main.o
-                0x008004a5                rx_buf
- .bss.new_byte  0x008004c4        0x2 binaries/main.o
-                0x008004c4                new_byte
+                0x00800470        0x2 binaries/semcreate.o
+ .bss.nnames    0x00800472        0x4 binaries/naminit.o
+                0x00800472                nnames
+ .bss.nametab   0x00800476       0x54 binaries/naminit.o
+                0x00800476                nametab
+ .bss.tx_buf    0x008004ca       0x1f binaries/main.o
+                0x008004ca                tx_buf
+ .bss.rx_buf    0x008004e9       0x1f binaries/main.o
+                0x008004e9                rx_buf
+ .bss.new_byte  0x00800508        0x2 binaries/main.o
+                0x00800508                new_byte
+ .bss.twi_received_byte
+                0x0080050a        0x1 binaries/twi-master.o
+                0x0080050a                twi_received_byte
  *(COMMON)
-                0x008004c6                        PROVIDE (__bss_end = .)
-                0x00002ad2                        __data_load_start = LOADADDR (.data)
-                0x00002b3a                        __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0080050b                        PROVIDE (__bss_end = .)
+                0x00002b8c                        __data_load_start = LOADADDR (.data)
+                0x00002c38                        __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008004c6        0x0
+.noinit         0x0080050b        0x0
                 [!provide]                        PROVIDE (__noinit_start = .)
  *(.noinit .noinit.* .gnu.linkonce.n.*)
                 [!provide]                        PROVIDE (__noinit_end = .)
-                0x008004c6                        _end = .
+                0x0080050b                        _end = .
                 [!provide]                        PROVIDE (__heap_start = .)
                 0x00000000                        __flmap_init_label = DEFINED (__flmap_noinit_start)?__flmap_noinit_start:0x0
                 0x00000000                        __flmap = DEFINED (__flmap)?__flmap:0x0
@@ -1431,6 +1452,7 @@ END GROUP
  .comment       0x00000024       0x13 binaries/gpio.o
  .comment       0x00000024       0x13 binaries/main.o
  .comment       0x00000024       0x13 binaries/serial.o
+ .comment       0x00000024       0x13 binaries/twi-master.o
  .comment       0x00000024       0x13 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vsnprintf.o)
  .comment       0x00000024       0x13 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(vfprintf_std.o)
  .comment       0x00000024       0x13 /usr/lib/gcc/avr/15.1.0/../../../../avr/lib/avr5/libc.a(fputc.o)
