@@ -68,7 +68,7 @@ void get_inputs() {
         for (int i = 0; i < data_size; ++i) {
             buffer_put(&tx_buf, data);
         }
-        sleepms(500);
+        sleepms(13);
     }
 }
 
