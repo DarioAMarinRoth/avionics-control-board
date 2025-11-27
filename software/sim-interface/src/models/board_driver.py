@@ -30,7 +30,7 @@ class BoardDriver:
 
     def _listen(self):
         # print("Escuchando..")
-        self._flush_startup()
+        # self._flush_startup()
         while True:
             raw_data = self.nano.readline()
             # print("Crudo:", raw_data)
@@ -52,12 +52,12 @@ class BoardDriver:
 
     def _flush_startup(self):
         ts = 0
-        tl = time.time() + 5
+        tl = time.time() + 2
+        self.nano.timeout = 0.5
         while ts < tl:
             ts = time.time()
             line = self.nano.readline()
             print(line)
-            self.nano.timeout = 0.5
         print("Purgado")
         self.nano.timeout = None
 
@@ -67,6 +67,7 @@ class BoardDriver:
         self.nano.dtr = True
         sleep(2)
         self.nano.reset_input_buffer()
+        print("Reset finalizado")
 
     @staticmethod
     def _to_string(num):
