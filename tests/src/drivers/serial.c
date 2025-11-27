@@ -101,6 +101,6 @@ uint16_t serial_get_uint(int digits) {
     return result;
 }
 
-ISR(USART_RX_vect) {
-    buffer_put(buf, serial_port->data_io);
-}
+// ISR(USART_RX_vect) {
+//     buffer_put(buf, serial_port->data_io);
+// }
