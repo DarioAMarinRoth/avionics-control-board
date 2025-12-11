@@ -5,6 +5,8 @@ class Logger:
     __BLUE = "\033[94m"
     __YELLOW = "\033[93m"
     __RED = "\033[91m"
+    __GREEN = "\033[92m"
+    __CYAN = "\033[96m"
 
     def __init__(self, name: str):
         self.name = name
@@ -17,3 +19,9 @@ class Logger:
 
     def error(self, message: str):
         print(f"{self.__RED}[ERROR] ({self.name}) {message}{self.__RESET}")
+
+    def success(self, message: str):
+        print(f"{self.__GREEN}[SUCCESS] ({self.name}) {message}{self.__RESET}")
+
+    def debug(self, message: str):
+        print(f"{self.__CYAN}[DEBUG] ({self.name}) {message}{self.__RESET}")

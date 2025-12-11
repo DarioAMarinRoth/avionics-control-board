@@ -1,0 +1,81 @@
+connection:
+  port: 'COM3'
+  baudrate: 9600
+
+inputs:
+  0:
+    label: battery
+    button_id: 1
+  1:
+    label: alternator
+    button_id: 2
+  2:
+    label: mag_l
+    button_id: 3
+  3:
+    label: mag_r
+    button_id: 4
+  4:
+    label: mag_both
+    button_id: 5
+  5:
+    label: starter
+    button_id: 6
+  6:
+    label: fuel_pump
+    button_id: 7
+  7:
+    label: cabin_lights
+    button_id: 8
+  8:
+    label: panel_lights
+    button_id: 9
+  9:
+    label: nav_lights
+    button_id: 10
+  10:
+    label: beacon_light
+    button_id: 11
+  11:
+    label: strobe_lights
+    button_id: 12
+  12:
+    label: taxi_lights
+    button_id: 13
+  13:
+    label: landing_lights
+    button_id: 14
+  14:
+    label: pitot_heat
+    button_id: 15
+  15:
+    label: avionics_master
+    button_id: 16
+  16:
+    label: prop_deice
+    button_id: 17
+  17:
+    label: gear
+    button_id: 18
+  35: # ! NO CAMBIAR ÉSTA ID. El correcto funcionamiento del trim depende de este valor.
+    label: trim
+    axis_id: 0x30 # id del eje x según el sdk de vjoy.
+
+simvars:
+  'GEAR CENTER POSITION':
+    custom: False
+    output: "green_led_1"
+    arduino_ids:
+      - 0
+      - 1
+      - 2
+  'GEAR IN TRANSIT': # ! No modificar. Está hardcodeada en SimConnector.
+    custom: True
+    output: "red_led"
+    arduino_ids:
+      - 3
+  'LIGHT PANEL ON':
+    custom: False
+    output: "panel_lights"
+    arduino_ids:
+      - 4
