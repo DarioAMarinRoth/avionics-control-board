@@ -4,14 +4,17 @@
  *
  **********************************************************************/
 
-#include <stdint.h>
-#include <avr/interrupt.h>
-#include <avr/io.h>
-#include "buffer.h"
-#include "int_communication_pc_2_mcu.h"
+
+// #include <avr/interrupt.h>
+
+// #include "buffer.h"
+// #include "int_communication_pc_2_mcu.h"
 
 #ifndef _SERIAL_H
 #define _SERIAL_H
+
+#include <stdint.h>
+#include <avr/io.h>
 
 #define USART_BAUDRATE 9600
 #define BAUD_PRESCALE  (((F_CPU/(USART_BAUDRATE*16UL)))-1)

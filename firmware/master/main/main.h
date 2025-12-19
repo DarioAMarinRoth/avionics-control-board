@@ -52,5 +52,6 @@ void set_outputs();
  */
 void f_to_string(char *str, uint8_t num);
 
+void encoder_init();
 
 #endif
