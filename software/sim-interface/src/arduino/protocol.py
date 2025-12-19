@@ -15,9 +15,7 @@ class ArduinoProtocol:
             ArduinoProtocol.logger.error(f"El mensaje recibido \"{data_str}\" no se corresponde con un entero")
             return None
 
-
-
-
     @staticmethod
     def encode_message(command_id: int):
+        command_id = int(command_id)
         return f"{command_id:02d}{ArduinoProtocol.EOL}".encode()

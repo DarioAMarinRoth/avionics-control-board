@@ -1,15 +1,12 @@
-import threading
 import time
 from typing import List
-
 from SimConnect import SimConnect, PERIOD_SIM_FRAME
+
 from core.event_bus import EventBus
 from core.events import EventType
 from src.utils.logger import Logger
 
-
 class SimConnector:
-
     _CONNECTION_COLDOWN = 10
 
     def __init__(self, simvars: List[str], bus: EventBus):
@@ -26,7 +23,6 @@ class SimConnector:
         self._logger.info("Iniciando SimConnector loop")
 
         while True:
-
             while self._sc is None:  # Conexión/Reconexión
                 self._connect()
             self._subscribe()
@@ -41,7 +37,6 @@ class SimConnector:
                     time.sleep(1)
                     break
 
-
     def _get_frame(self):
         while self._sc.receive(timeout_seconds=0.005):
             pass
@@ -53,8 +48,6 @@ class SimConnector:
                 self._latest_pointer = self._dataset.simdata.latest()
                 for name, value in changes.items():
                     self._handle_change(name, value)
-
-        # time.sleep(0.002)
 
     def _connect(self):
         self._logger.info("Intentando conectar con el simulador")
@@ -70,7 +63,7 @@ class SimConnector:
         self._dataset = self._sc.subscribe_simdata(
             self._simvars,
             period=PERIOD_SIM_FRAME,
-            interval=1
+            interval=5  # Funcionó bien con esto así
         )
         self._latest_pointer = 0
 
@@ -80,21 +73,15 @@ class SimConnector:
             self._logger.debug(f"PANEL LIGHTS {value}")
             return
 
-        if value == 1:
+        if value in (0, 1):
             self._gear_transit = False
-            self._logger.debug(f"Tren abajo")
-            self._bus.publish(EventType.SIMVAR_UPDATE, name, value)
-            self._bus.publish(EventType.SIMVAR_UPDATE,'GEAR IN TRANSIT', 0)
-            return
-        elif value == 0:
-            self._logger.debug(f"Tren Arriba")
-            self._gear_transit = False
+            state = "abajo" if value == 1 else "Arriba"
+            self._logger.debug(f"Tren {state}")
             self._bus.publish(EventType.SIMVAR_UPDATE, name, value)
             self._bus.publish(EventType.SIMVAR_UPDATE, 'GEAR IN TRANSIT', 0)
-            return
         else:
             if not self._gear_transit:
                 self._logger.debug(f"Tren en tránsito")
                 self._gear_transit = True
+                self._bus.publish(EventType.SIMVAR_UPDATE, name, value)
                 self._bus.publish(EventType.SIMVAR_UPDATE, 'GEAR IN TRANSIT', 1)
-                return

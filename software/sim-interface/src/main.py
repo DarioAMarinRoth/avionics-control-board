@@ -23,7 +23,7 @@ sim_thread = threading.Thread(target=sim_connection.loop)
 
 sim_thread.start()
 
-while not sim_connection.running:
-    pass
+# while not sim_connection.running:
+#     pass
 
 arduino_thread.start()

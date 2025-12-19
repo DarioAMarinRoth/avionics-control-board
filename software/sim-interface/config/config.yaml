@@ -1,5 +1,5 @@
 connection:
-  port: 'COM3'
+  port: 'COM5'
   baudrate: 9600
 
 inputs:
@@ -66,14 +66,14 @@ simvars:
     custom: False
     output: "green_led_1"
     arduino_ids:
-      - 0
       - 1
       - 2
+      - 3
   'GEAR IN TRANSIT': # ! No modificar. Está hardcodeada en SimConnector.
     custom: True
     output: "red_led"
     arduino_ids:
-      - 3
+      - 0
   'LIGHT PANEL ON':
     custom: False
     output: "panel_lights"

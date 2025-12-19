@@ -17,10 +17,10 @@ class ArduinoGateway:
     def __init__(self, config: ConnectionConfig, event_bus: EventBus):
         self.config = config
         self.event_bus = event_bus
-        self.serial = serial.Serial(config.port, config.baudrate) # Comentar si se va a probar sin arduino
+        self.serial = serial.Serial(config.port, config.baudrate)
         self.logger = Logger("arduino")
         self.inputs_state: dict[int,int] = {}
-        event_bus.subscribe(EventType.ARDUINO_COMMAND, self._send_message) # Comentar si se va a probar sin arduino
+        event_bus.subscribe(EventType.ARDUINO_COMMAND, self._send_message)
 
     def reset_board(self):
         self.serial.dtr = False
