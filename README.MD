@@ -6,7 +6,7 @@ Este repositorio contiene los archivos del trabajo final de la materia optativa 
 
 El proyecto consiste en un panel de controles para simuladores de vuelo que admite interruptores, encoders y salidas lumínicas. Si bien el periférico se puede utilizar con cualquier simulador (dado que la PC lo reconoce como un joystick cualquiera por utilizar el software **VJoy**), tiene una integración dedicada con **Microsoft Flight Simulator 2020**. Esto permite que el simulador excite las salidas lumínicas en base a eventos que ocurran en el vuelo mediante la API **SimConnect**.
 
-Todo el sistema se diseñó alrededor del microcontrolador **ATmega328P**, usando como base una placa Arduino Nano. El firmware del sistema embebido se ejecuta utilizando **XINU OS** como sistema operativo, diseñado originalmente por Douglas E. Comer. Específicamente, se utiliza el port `xinu-avr` desarrollado por Rafael Ignacio Zurita (docente de la cátedra), el cual también integra código escrito por Michael M. Minor.
+Todo el sistema se diseñó alrededor del microcontrolador **ATmega328P**, usando como base una placa Arduino Nano. El firmware del sistema embebido se ejecuta utilizando **XINU OS** como sistema operativo, diseñado originalmente por Douglas E. Comer. Específicamente, se utiliza el port [`xinu-avr`](https://github.com/zrafa/xinu-avr) desarrollado por [Rafael Ignacio Zurita](https://github.com/zrafa) (docente de la cátedra), el cual también integra código escrito por Michael M. Minor.
 
 ## Características principales
 
