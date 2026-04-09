@@ -1,64 +1,26 @@
-# Panel de Instrumentos para simuladores de vuelo basado en microcontroladores ATMega328p
+# Avionics Control Board
 
 ## Introducción
 
-Este repositorio contiene el desarrollo del proyecto final de la materia optativa "Programación de sistemas embebidos". El mismo se trata de un panel de instrumentos personalizado para su uso en simuladores de vuelo.
+Este repositorio contiene los archivos del trabajo final de la materia optativa "Programación de sistemas embebidos" de la carrera de Ingeniería Electrónica de la Universidad Nacional del Comahue. 
 
-> [!IMPORTANT]  
-> El proyecto aún se encuentra en desarrollo y actualmente no es funcional.
+El proyecto consiste en un panel de controles para simuladores de vuelo que admite interruptores, encoders y salidas lumínicas. Si bien el periférico se puede utilizar con cualquier simulador (dado que la PC lo reconoce como un joystick cualquiera por utilizar el software **VJoy**), tiene una integración dedicada con **Microsoft Flight Simulator 2020**. Esto permite que el simulador excite las salidas lumínicas en base a eventos que ocurran en el vuelo mediante la API **SimConnect**.
 
-[Documentación técnica](docs/wiki/main.md)
+Todo el sistema se diseñó alrededor del microcontrolador **ATmega328P**, usando como base una placa Arduino Nano. El firmware del sistema embebido se ejecuta utilizando **XINU OS** como sistema operativo, diseñado originalmente por Douglas E. Comer. Específicamente, se utiliza el port `xinu-avr` desarrollado por Rafael Ignacio Zurita (docente de la cátedra), el cual también integra código escrito por Michael M. Minor.
 
-## Características
+## Características principales
 
-- Posibilidad de conectar hasta más de 36 entradas.
-- Control e interacción en tiempo real con Flight Simulator.
-- Respuestas basándose en eventos que sucedan en el simulador.
+- Soporte para hasta **36 entradas** del tipo ON/OFF.
+- Un eje rotativo mediante encoder óptico, pensado originalmente como rueda para el compensador de cabeceo (trim).
+- Luces indicadoras de estado del tren de aterrizaje (abajo y en tránsito).
+- Retroiluminación de cabina integrada.
+- Integración bidireccional directa con Flight Simulator 2020.
 
-## Requisitos
+## Estructura del repositorio
 
-> [!WARNING]  
-> Para compilar y flahsear el código en el microcontrolador, será necesario hacerlo en un sistema operativo Linux.
+- `/chasis`: Modelos 3D y demás apartados referentes al gabinete y mecánica del periférico.
+- `/firmware`: Código fuente para el microcontrolador.
+- `/hardware`: Diseño de la placa PCB (Esquemáticos, lista de materiales y archivos Gerber).
+- `/software`: Aplicación puente que gestiona la comunicación entre el panel físico y la API de MSFS 2020.
 
-### Hardware
-
-- Arduino Nano: x2
-- Resistencias varias
-- Interruptores varios
-- Diodos
-- Cables
-
-### Software
-
-- **GNU Make**: Herramienta de automatización de compilación.
-- **avr-gcc**: Compilador para microcontroladores AVR.
-- **avrdude**: Herramienta para programar microcontroladores AVR.
-- **Bibliotecas de desarrollo AVR**: Necesarias para compilar el código para el microcontrolador.
-- **Python 3**: Lenguaje de programación.
-
-#### Instalación en Linux
-
-Se pueden instalar las herramientas necesarias en una distribución basada en Debian/Ubuntu mediante:
-
-```sh
-sudo apt install make gcc-avr avr-libc avrdude
-```
-
-## Pruebas
-
-El proyecto incluye un conjunto de pruebas básicas para validar las capas de hardware y comunicación. Los tests disponibles son:
-
-1. **Prueba de la Matriz de Botones**  
-   Verifica la funcionalidad de la matriz de botones. [Ver instrucciones](docs/tests/matrix.md).
-
-2. **Prueba de Comunicación I²C**  
-   Verifica el correcto funcionamiento de la comunicación I²C entre dispositivos. [Ver instrucciones](docs/tests/twi.md).
-
-3. **Prueba de Joystick Virtual**  
-   Simulación de la pulsación de un botón en un joystick. [Ver instrucciones](docs/tests/pvjoy.md).
-
-4. **Prueba de Comunicación Serial**  
-   Verifica el correcto funcionamiento de la comunicación serial entre el arduino y los scripts que corren en la PC. [Ver instrucciones](docs/tests/serial.md).
-
-5. **Prueba de la librería SimConnect**  
-   Verifica el funcionamiento básico de la librería SimConnect para obtener variables del simulador. [Ver instrucciones](docs/tests/simconnect.md).
+Para instrucciones sobre cómo ensamblar el chasis, flashear el firmware, configurar el software de conexión y demás detalles de implementación, por favor visita la [Wiki del proyecto](https://github.com/DarioAMarinRoth/avionics-control-board/wiki).
