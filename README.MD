@@ -18,7 +18,6 @@ Todo el sistema se diseñó alrededor del microcontrolador **ATmega328P**, usand
 
 ## Estructura del repositorio
 
-- `/chasis`: Modelos 3D y demás apartados referentes al gabinete y mecánica del periférico.
 - `/firmware`: Código fuente para el microcontrolador.
 - `/hardware`: Diseño de la placa PCB (Esquemáticos, lista de materiales y archivos Gerber).
 - `/software`: Aplicación puente que gestiona la comunicación entre el panel físico y la API de MSFS 2020.
