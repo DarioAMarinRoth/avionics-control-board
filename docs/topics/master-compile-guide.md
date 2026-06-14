@@ -29,20 +29,18 @@ fuente del firmware o se configure una nueva placa desde cero.
       <tr><td><code>make</code></td><td>Build</td></tr>
       <tr><td><code>git</code></td><td>Clonar el repositorio</td></tr>
       </table>
+        <chapter title="Clonar el repositorio">
+            Asegurate de tener el repositorio clonado localmente:
+            <code-block lang="shell">
+                git clone https://github.com/DarioAMarinRoth/avionics-control-board.git  
+                cd avionics-control-board
+            </code-block>
+        </chapter>
     </tab>
     <tab id="windows-software" title="Windows" group-key="windows">
-        TODO
+        <include from="install-guide.topic" element-id="windows-reqs"></include>
     </tab>
 </tabs>
-
-### Repositorio clonado
-
-Asegurate de tener el repositorio clonado localmente:
-
-```Shell
-git clone https://github.com/DarioAMarinRoth/avionics-control-board.git  
-cd avionics-control-board
-```
 
 ## Compilar y flashear
 
@@ -53,7 +51,7 @@ cd avionics-control-board
         <include from="install-guide.topic" element-id="linux-comp"></include>
     </tab>
     <tab id="windows-comp" title="Windows" group-key="windows">
-        TODO
+        <include from="install-guide.topic" element-id="windows-comp"></include>
     </tab>
 </tabs>
 
@@ -64,6 +62,6 @@ cd avionics-control-board
         <include from="install-guide.topic" element-id="linux-flash"></include>
     </tab>
     <tab id="windows-flash" title="Windows" group-key="windows">
-        TODO
+        <include from="install-guide.topic" element-id="windows-flash"></include>
     </tab>
 </tabs>

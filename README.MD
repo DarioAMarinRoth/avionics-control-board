@@ -22,4 +22,4 @@ Todo el sistema se diseñó alrededor del microcontrolador **ATmega328P**, usand
 - `/hardware`: Diseño de la placa PCB (Esquemáticos, lista de materiales y archivos Gerber).
 - `/software`: Aplicación puente que gestiona la comunicación entre el panel físico y la API de MSFS 2020.
 
-Para instrucciones sobre cómo ensamblar el chasis, flashear el firmware, configurar el software de conexión y demás detalles de implementación, por favor visita la [Wiki del proyecto](https://github.com/DarioAMarinRoth/avionics-control-board/wiki).
+Para instrucciones sobre cómo ensamblar el chasis, flashear el firmware, configurar el software de conexión y demás detalles de implementación, por favor visita la [Wiki del proyecto](https://DarioAMarinRoth.github.io/avionics-control-board/).
