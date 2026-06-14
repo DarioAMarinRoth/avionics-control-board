@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic SYSTEM "https://resources.jetbrains.com/writerside/1.0/html-entities.dtd">
+<topic xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" is-library="true" id="install-guide" title="install-guide">
+    <!-- Put your snippets here -->
+    <snippet id="linux-comp">
+        <p>El sistema de build del Master está gestionado por el <code>Makefile</code> ubicado en
+            <path>firmware/master/compile/</path>
+            . El proceso agrega automáticamente los archivos fuente del kernel XINU (
+            <path>../system/</path>
+            ), las bibliotecas (
+            <path>../lib/</path>
+            ), los drivers de dispositivo (
+            <path>../device/nam/</path>
+            ) y la lógica de aplicación (
+            <path>../main/</path>
+            ).
+        </p>
+        <p>Navega al directorio de compilación y ejecuta <code>make</code>:</p>
+        <code-block lang="bash">
+            cd firmware/master/compile
+            make
+        </code-block>
+        
+        <p>Si la compilación es exitosa, se generarán los archivos objeto en el subdirectorio <path>binaries/</path> y los archivos <path>xinu.elf</path> y <path>xinu.bin</path> en el directorio de compilación.</p>
+    </snippet>
+
+    <snippet id="linux-flash">
+
+        <p>Desde el mismo directorio de compilación, ejecuta</p>
+        <code-block lang="Bash">
+            make flash
+        </code-block>
+        <p><code>avrdude</code> mostrará el progreso de escritura y verificación. Una salida exitosa terminará con un mensaje similar a:</p>
+        <code-block lang="plain text">
+            9652 bytes of flash verified
+
+            Avrdude done.  Thank you.
+        </code-block>
+    </snippet>
+</topic>

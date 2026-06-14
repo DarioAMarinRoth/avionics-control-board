@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="7d64d3f5">
+        <description>Created after removal of "Instalación y uso" from Avionics Control Board</description>
+        <accepts>Installation-guide.html</accepts>
+    </rule>
+    <rule id="4ea45e04">
+        <description>Created after removal of "install-guide" from Avionics Control Board</description>
+        <accepts>install-guide.html</accepts>
+    </rule>
+</rules>
