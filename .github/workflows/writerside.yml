@@ -16,6 +16,9 @@ jobs:
         with:
           instance: docs/acb
           artifact: webHelp-acb-all.zip
+      - name: Debug - listar archivos
+        run: find . -name "*.zip" 2>/dev/null
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
