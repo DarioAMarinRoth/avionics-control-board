@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Compilar y Flashear el Firmware" id="Compilar-y-Flashear-el-Firmware">
+
+    <p>Esta guía explica como compilar desde el código fuente y cargar el firmware tanto para el Arduino Master como
+        para el Slave.
+        Seguir este procedimiento es necesario cada vez que se modifique el código fuente del firmware o se configuren
+        nuevas placas desde cero.</p>
+
+    <chapter title="Antes de empezar">
+
+        <p>Los procedimientos a continuación están explicados para ser llevados a cabo en un sistema Linux. Para poder
+            realizar los pasos desde Windows, lea primero <a href="Compilar-y-Flashear-con-Windows.topic"></a>.</p>
+
+        <chapter title="Hardware requerido">
+            <list>
+                <li>Arduino Nano x2 (Master y Slave)</li>
+                <li>Cable USB</li>
+            </list>
+        </chapter>
+
+        <chapter title="Paquetes necesarios">
+            <p>Utiliza el siguiente comando para instalar todos los paquetes necesarios:</p>
+            <tabs>
+                <tab title="Debian/Ubuntu">
+                    <code-block lang="shell">
+                        sudo apt update
+                        sudo apt install gcc-avr binutils-avr avr-libc avrdude flex bison make git
+                    </code-block>
+                </tab>
+                <tab title="Arch Linux">
+                    <code-block lang="Shell">
+                        sudo pacman -S avr-gcc avr-binutils avr-libc avrdude flex bison make git
+                    </code-block>
+                </tab>
+            </tabs>
+
+            <table>
+                <tr>
+                    <td><b>Paquete</b></td>
+                    <td><b>Uso</b></td>
+                </tr>
+                <tr>
+                    <td><code>gcc-avr</code></td>
+                    <td>Compilador en C para microcontroladores AVR</td>
+                </tr>
+                <tr>
+                    <td><code>binutils-avr</code></td>
+                    <td>Linker y utilidades para AVR</td>
+                </tr>
+                <tr>
+                    <td><code>avr-libc</code></td>
+                    <td>Biblioteca estándar de C para AVR</td>
+                </tr>
+                <tr>
+                    <td><code>avrdude</code></td>
+                    <td>Herramienta para flashear</td>
+                </tr>
+                <tr>
+                    <td><code>flex</code></td>
+                    <td>Generador de analizador léxico</td>
+                </tr>
+                <tr>
+                    <td><code>bison</code></td>
+                    <td>Generador de analizador sintáctico</td>
+                </tr>
+                <tr>
+                    <td><code>make</code></td>
+                    <td>Build</td>
+                </tr>
+                <tr>
+                    <td><code>git</code></td>
+                    <td>Clonar el repositorio</td>
+                </tr>
+            </table>
+
+        </chapter>
+
+        <chapter title="Clonar el repositorio">
+            <p>Si no lo había hecho anteriormente, clone el repositorio localmente:</p>
+            <code-block lang="Shell">
+                git clone https://github.com/DarioAMarinRoth/avionics-control-board.git
+                cd avionics-control-board
+            </code-block>
+        </chapter>
+    </chapter>
+
+    <chapter title="Dispositivo Master">
+        <p> El Master ejecuta el kernel XINU OS y es responsable de la comunicación serial con la PC, el
+            manejo del encoder y el control de los LEDs indicadores.</p>
+
+        <procedure title="1. Compilar">
+            <p>El sistema de build del Master está gestionado por el <code>Makefile</code> ubicado en
+                <path>firmware/master/compile/</path>
+                .
+            </p>
+            <step>
+                Desde el directorio raíz del proyecto, navegue al directorio de compilación y ejecute <code>make</code>:
+                <code-block lang="Shell">
+                    cd firmware/master/compile
+                    make
+                </code-block>
+            </step>
+            <p>Si la compilación es exitosa, se generarán los archivos objeto en el subdirectorio
+                <path>binaries/</path>
+                y los archivos
+                <path>xinu.elf</path>
+                y
+                <path>xinu.bin</path>
+                en el directorio de compilación.
+            </p>
+            <tip>Si por algún motivo necesita eliminar los archivos generados, puede hacerlo ejecutando <code>make
+                clean</code> en el directorio de compilación.
+            </tip>
+        </procedure>
+
+
+        <procedure title="2. Flashear">
+            <step><b>Conectar el Master</b>
+                <p>Conecte uno de los Arduinos por USB a la computadora.</p>
+            </step>
+            <step><b>Cargar el firmware</b>
+                <p>Desde el mismo directorio de compilación, ejecute:</p>
+                <code-block lang="Bash">
+                  make flash
+                </code-block>
+            </step>
+            <p><code>avrdude</code> mostrará el progreso de escritura y verificación. Una salida exitosa terminará con
+                un
+                mensaje similar a:</p>
+            <code-block lang="plain text">
+                9652 bytes of flash verified
+
+                Avrdude done.  Thank you.
+            </code-block>
+        </procedure>
+
+
+    </chapter>
+
+    <chapter title="Dispositivo Slave">
+        <p> El Esclavo, a diferencia del Master no ejecuta un sistema operativo; es un firmware bare-metal que gestiona
+            el teclado matricial y la comunicación I²C con el Master.</p>
+
+        <procedure title="1. Compilar">
+            <p>El Makefile del Esclavo se encuentra directamente en
+                <path>firmware/slave/</path>
+                , sin subdirectorio
+                <path>compile/</path>
+                intermedio.
+            </p>
+            <step>
+                Desde la raíz del proyecto, navegue al directorio del Slave y ejecute make:
+                <code-block lang="Shell">
+                    cd firmware/slave
+                    make
+                </code-block>
+            </step>
+            <p>
+                Si la compilación es exitosa, se creará el directorio
+                <path>build/</path>
+                con los archivos objeto y el binario ELF
+                enlazado
+                <path>build/program</path>
+                .
+            </p>
+            <tip>
+                Nuevamente, es posible eliminar los archivos generados ejecutando <code>make
+                clean</code> en caso de requerirse.
+            </tip>
+        </procedure>
+
+        <procedure title="2. Flashear">
+            <step><b>Conectar el Slave</b>
+                <p>
+                    Desconecte el Master si aún lo tiene conectado y conecte el Arduino restante por USB a la
+                    computadora.
+                </p>
+            </step>
+            <step><b>Verificar el puerto</b>
+                <p>A diferencia del Master, el Makefile del Esclavo tiene el puerto hardcodeado como
+                    <path>/dev/ttyUSB0</path>
+                    . Verifique en que puerto se conectó el Arduino con:
+                </p>
+                <code-block lang="Shell">
+                    ls /dev/ttyUSB*
+                </code-block>
+                <p>Si el dispositivo aparece en un puerto diferente (por ejemplo
+                    <path>/dev/ttyUSB1</path>
+                    ), será necesaraio editar el Makefile antes
+                    de continuar.
+                </p>
+                <deflist collapsible="true">
+                    <def title="Editar el Makefile">
+                        Edite la línea 9 del Makefile y modifique el puerto
+                        <path>/dev/ttyUSB0</path>
+                        por el que obtuvo en el paso 2:
+                        <code-block lang="Make">
+                            PORT = /dev/ttyUSB0 # Modificar por el puerto obtenido
+                        </code-block>
+                    </def>
+                </deflist>
+            </step>
+            <step>
+                <b>Cargar el firmware</b>
+                <p>Desde el directorio firmware/slave/, ejecute:</p>
+                <code-block lang="Shell">
+                    make flash
+                </code-block>
+            </step>
+            <p><code>avrdude</code> mostrará el progreso de escritura y verificación. Una salida exitosa terminará con
+                un mensaje similar a:</p>
+            <code-block>
+                2572 bytes of flash verified
+
+                Avrdude done.  Thank you.
+            </code-block>
+        </procedure>
+    </chapter>
+
+</topic>

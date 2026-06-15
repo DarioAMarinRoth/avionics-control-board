@@ -4,12 +4,13 @@
 
 <instance-profile id="acb"
                  name="Avionics Control Board"
-                 start-page="master-compile-guide.md">
+                 start-page="Compilar-y-Flashear-el-Firmware.topic">
 
     <toc-element topic="overview.md">
     </toc-element>
     <toc-element toc-title="Instalación y uso">
-        <toc-element topic="master-compile-guide.md"/>
+        <toc-element topic="Compilar-y-Flashear-el-Firmware.topic"/>
+        <toc-element topic="Compilar-y-Flashear-con-Windows.topic"/>
     </toc-element>
     <toc-element topic="starter-topic.md"/>
 </instance-profile>

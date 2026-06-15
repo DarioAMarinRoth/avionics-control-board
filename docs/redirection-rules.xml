@@ -14,4 +14,13 @@
         <description>Created after removal of "install-guide" from Avionics Control Board</description>
         <accepts>install-guide.html</accepts>
     </rule>
+    <rule id="2db67682">
+        <description>Created after removal of "Compilar y Flashear con Windows" from Avionics Control Board
+        </description>
+        <accepts>Compilar-y-Flashear-con-Windows.html</accepts>
+    </rule>
+    <rule id="1657bca3">
+        <description>Created after removal of "Compilar y Flashear el Master" from Avionics Control Board</description>
+        <accepts>master-compile-guide.html</accepts>
+    </rule>
 </rules>

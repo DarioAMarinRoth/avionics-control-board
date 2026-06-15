@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Compilar y Flashear con Windows" id="Compilar-y-Flashear-con-Windows">
+
+    <chapter title="Introducción">
+        <p> Esta guía está dirigida a los usuarios que necesiten compilar el código fuente, ya sea el dispositivo Master
+            o Slave, desde un sistema con Windows</p>
+        <p> El sistema de build utiliza herramientas y comandos propios de Linux por lo que no puede ejecutarse en
+            Windows nativo. La opción más robusta es WSL2 (Windows Subsystem for Linux) con Ubuntu, que permite usar el
+            mismo flujo que en Linux. Para el flasheo del firmware por USB se requiere además la herramienta usbipd-win,
+            que permite exponer dispositivos USB de Windows hacia el entorno WSL.</p>
+    </chapter>
+
+    <chapter title="Instalación del software requerido">
+
+        <chapter title="1. Instalar WSL2 con Ubuntu">
+            <p> Abra una terminal de PowerShell como administrador y ejecute:</p>
+
+            <code-block lang="PowerShell">
+                wsl --install
+        </code-block>
+
+            <p> El comando anterior instalará WSL2 con Ubuntu por defecto. Reinicie el equipo cuando se solicite y
+                complete
+                la configuración inicial de Ubuntu (usuario y contraseña).</p>
+
+            <p> Para más información o solucionar problemas en la instalación, se recomienda leer la <a
+                    href="https://learn.microsoft.com/es-es/windows/wsl/install">documentacion oficial de WSL</a>.</p>
+        </chapter>
+
+        <chapter title="2. Descargar e instalar usbipd-win">
+            Descargue el instalador .msi que corresponde a su procesador desde la <a
+                href="https://github.com/dorssel/usbipd-win/releases">página
+            de releases de usbipd-win</a> e instale el programa normalmente.
+        </chapter>
+
+    </chapter>
+
+    <chapter title="Configuración inicial y uso">
+
+        <p> Cada vez que se quiera compilar o flashear uno de los microcontroladores deberá hacerse desde la terminal
+            WSL que se instaló anteriormente. Sin embargo, para el momento de flashear, resta identificar y redirigir el
+            dispositivo USB a WSL.</p>
+
+        <chapter title="1. Identificar y redirigir el dispositivo USB">
+            <list type="alpha-lower">
+                <li>Abra una terminal WSL y déjela de lado momentáneamente.</li>
+                <li>Conecte un Arduino Nano a la computadora. A continuación, abra una terminal de PowerShell y
+                    ejecute:
+                    <code-block lang="PowerShell">
+                        usbipd list
+                    </code-block>
+                </li>
+                <li>Identifique el Arduino dentro de la lista de dispositivos conectados. Normalmente, aparece como "USB
+                    Serial Device" o similar. Registre el valor de la columna <code>BUSID</code> (por ejemplo
+                    <code>2-1</code>). Para vincularlo y adjuntarlo a WSL, ejecute los siguientes comandos en la
+                    PowerShell:
+
+                    <code-block lang="PowerShell">
+                        usbipd bind --busid 2-1 # Modifique 2-1 por su BUSID
+                        usbipd attach --wsl --busid 2-1 # Modifique 2-1 por su BUSID
+                    </code-block>
+
+                    <note>
+                        <b>Importante:</b>
+                        El comando <code>attach</code> debe ejecutarse cada vez que se desconecta y se vuelve a conectar
+                        el Arduino.
+                    </note>
+                </li>
+            </list>
+
+            <p> Para mayor información o solución a problemas, se recomienda leer el artículo <a
+                    href="https://github.com/dorssel/usbipd-win/wiki/WSL-support">WSL support</a> de la wiki de
+                usbipd-win.</p>
+        </chapter>
+
+        <chapter title="2. Verificar el dispositivo en WSL">
+            <p> Desde la terminal de Ubuntu (WSL), verifique que el dispositivo sea visible:</p>
+            <code-block lang="Shell">
+                ls /dev/ttyACM* /dev/ttyUSB*
+            </code-block>
+        </chapter>
+
+        <chapter title="3. Uso">
+            Para compilar y flashear, siga los pasos descritos en <a href="Compilar-y-Flashear-el-Firmware.topic">Compilar y Flashear
+            el Firmware</a> desde la terminal de WSL.
+        </chapter>
+    </chapter>
+
+
+</topic>
