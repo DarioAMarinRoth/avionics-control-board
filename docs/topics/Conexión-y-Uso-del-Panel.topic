@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="Conexión y Uso del Panel" id="Conexión-y-Uso-del-Panel">
+
+    <p>Si ya tiene el panel construido y ambas placas flasheadas, esta guía lo ayudará a configurar correctamente el
+        software para poder usar el panel como un periférico y adicionalmente a conectarlo con Flight Simulator para
+        activar las salidas del simulador.
+    </p>
+
+    <chapter title="Antes de empezar">
+
+        <p>Antes de comenzar con la configuración, asegúrese de cumplir con los siguientes requisitos: </p>
+        <list>
+            <li>Tener el tablero construido con el Master y el Esclavo ya flasheados</li>
+            <li>Estar en un sistema que corra con Windows</li>
+            <li>Tener instalado <a href="https://www.python.org/downloads/">Python 3.1</a> o superior</li>
+            <li>Tener instalado Microsoft Flight Simulator 2020 (opcional)</li>
+        </list>
+    </chapter>
+
+    <chapter title="1. Instalación y configuración de vJoy">
+        <p>vJoy es un driver que crea un joystick virtual en Windows. El software lo usa para enviar los inputs del
+            hardware al simulador.</p>
+        <procedure>
+            <step>Descargue el instalador desde la <a href="https://www.vjoy.org/es/download-for-windows">web
+                oficial</a>.
+            </step>
+            <step>Instale el programa con las opciones por defecto.</step>
+            <step>Una vez instalado, abra vJoy Configure y configure el Device 1 con al menos:
+                <list>
+                    <li>18 botones (la cantidad mínima configurada por defecto para el panel)</li>
+                    <li>El eje X habilitado (se utiliza para el trim)</li>
+                </list>
+                <note>Es importante que la configuración se haga sobre el Device 1 porque es el que luego utiliza el
+                    software puente para generar los eventos asociados a los interruptores.
+                </note>
+            </step>
+            <step>Haga clic en
+                <shortcut>Apply</shortcut>
+                y cierre la ventana.
+            </step>
+        </procedure>
+
+    </chapter>
+
+    <chapter title="2. Instalación del software">
+        <chapter title="2.1 Clonar o descargar el repositorio">
+            Si todavía no tiene el repositorio localmente en su PC clónelo o descárguelo desde GitHub:
+            <tabs>
+                <tab title="Clonar">
+                    Desde una terminal de PowerShell:
+                    <code-block lang="PowerShell">
+                        git clone https://github.com/DarioAMarinRoth/avionics-control-board.git
+                    </code-block>
+                </tab>
+                <tab title="Descargar">
+                    <list type="decimal">
+                        <li>Diríjase a <a href="https://github.com/DarioAMarinRoth/avionics-control-board.git"></a></li>
+                        <li>En la esquina superior derecha, haga clic en
+                            <ui-path>
+                                <include from="icons.topic" element-id="code-icon"></include>
+                                Code |
+                                <include from="icons.topic" element-id="zip-icon"></include>
+                                Download ZIP
+                            </ui-path>
+                        </li>
+                        <li>Extraiga el archivo en la ubicación deseada.</li>
+                    </list>
+                </tab>
+            </tabs>
+        </chapter>
+
+        <chapter title="2.2 Instalación de dependencias">
+
+            <p> Si bien se pueden instalar las dependencias a nivel sistema, es recomendable crear un entorno
+                virtual. Para ello, desde la carpeta raíz, ejecute:</p>
+            <code-block lang="PowerShell">
+                cd software
+                python -m venv .venv
+                .venv\Scripts\activate
+            </code-block>
+            <p>Utilice el siguiente comando para instalar las dependencias: </p>
+            <code-block lang="powershell">
+                pip install -r requirements.txt
+            </code-block>
+
+            <p>Esto instala:</p>
+
+            <table>
+                <tr>
+                    <td>
+                        <b>Paquete</b>
+                    </td>
+                    <td>
+                        <b>Uso</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>PyYAML</code>
+                    </td>
+                    <td>
+                        Leer el archivo
+                        <path>config.yaml</path>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>pyvjoystick</code>
+                    </td>
+                    <td>Controlar el joystick virtual</td>
+                </tr>
+                <tr>
+                    <td><code>pyserial</code></td>
+                    <td>Comunicación serial con el Arduino</td>
+                </tr>
+                <tr>
+                    <td><code>SimConnect</code></td>
+                    <td>Leer variables del simulador (MSFS2020)</td>
+                </tr>
+                <tr>
+                    <td><code>pysimconnect</code></td>
+                    <td>Complemento de <code>SimConnect</code></td>
+                </tr>
+
+            </table>
+        </chapter>
+    </chapter>
+
+    <chapter title="3. Configuración">
+        <procedure title="Identificación y configuración del puerto COM"
+                   id="identificación_y_configuración_del_puerto_com">
+            <step>Conecte la placa Master a la PC.</step>
+            <step>Presione
+                <shortcut>Win</shortcut>
+                +
+                <shortcut>X</shortcut>
+                y seleccione la opción
+                <ui-path>Administrador de dispositivos</ui-path>
+                .
+            </step>
+            <step>Despliegue la categoría llamada
+                <ui-path>Puertos (COM y LPT)</ui-path>
+            </step>
+            <step>
+                Dentro de la lista, identifique el dispositivo. Dependiendo de la placa puede aparecer como:
+                <list>
+                    <li>Arduino Nano</li>
+                    <li>USB-SERIAL CH340</li>
+                    <li>Dispositivo Serie USB</li>
+                </list>
+                <p> El puerto al cual se conectó estará indicado entre paréntesis, por ejemplo (COM3). Recuerde el valor
+                    del puerto para el próximo paso.</p>
+            </step>
+            <step>Desde la carpeta de la raíz del repositorio, navegue hasta
+                <path>software/config</path>
+                y abra el archivo
+                <path>config.yaml</path>
+                con un editor de texto.
+                <p>Al comienzo del archivo verá el fragmento</p>
+                <code-block lang="yaml">
+                    connection:
+                        port: 'COM5'
+                        baudrate: 9600
+                </code-block>
+                <p>Modifique el valor de <code>port</code> por el obtenido en el paso anterior y guarde y cierre el
+                    archivo.</p>
+            </step>
+        </procedure>
+    </chapter>
+    <chapter title="Correr el software" id="correr_el_software">
+        <p>Desde la carpeta
+            <ui-path>software/</ui-path>
+            del repositorio, con el entorno virtual activo, ejecute:
+        </p>
+        <code-block lang="PowerShell">
+            cd src
+            python main.py
+        </code-block>
+        <p>Si todo funciona correctamente, deberían suceder las siguientes acciones:</p>
+        <list>
+            <li>Se carga la configuración desde <code>config.yaml</code>.</li>
+            <li>Se intenta abrir el puerto COM del Arduino. Si el Arduino no está conectado, va a lanzar una excepción
+                inmediatamente.
+            </li>
+            <li>Se lanza un hilo para leer inputs del Arduino.</li>
+            <li>Se lanza un hilo que intenta conectar con el simulador. Si el simulador no está abierto, reintenta cada
+                10 segundos automáticamente.
+            </li>
+        </list>
+    </chapter>
+</topic>

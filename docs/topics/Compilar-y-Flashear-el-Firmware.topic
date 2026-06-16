@@ -6,8 +6,8 @@
        title="Compilar y Flashear el Firmware" id="Compilar-y-Flashear-el-Firmware">
 
     <p>Esta guía explica como compilar desde el código fuente y cargar el firmware tanto para el Arduino Master como
-        para el Slave.
-        Seguir este procedimiento es necesario cada vez que se modifique el código fuente del firmware o se configuren
+        para el Slave. </p>
+    <p>Seguir este procedimiento es necesario cada vez que se modifique el código fuente del firmware o se configuren
         nuevas placas desde cero.</p>
 
     <chapter title="Antes de empezar">
@@ -90,7 +90,7 @@
 
     <chapter title="Dispositivo Master">
         <p> El Master ejecuta el kernel XINU OS y es responsable de la comunicación serial con la PC, el
-            manejo del encoder y el control de los LEDs indicadores.</p>
+            manejo del encoder y el control de los LEDS indicadores.</p>
 
         <procedure title="1. Compilar">
             <p>El sistema de build del Master está gestionado por el <code>Makefile</code> ubicado en
@@ -190,7 +190,7 @@
                 </code-block>
                 <p>Si el dispositivo aparece en un puerto diferente (por ejemplo
                     <path>/dev/ttyUSB1</path>
-                    ), será necesaraio editar el Makefile antes
+                    ), será necesario editar el Makefile antes
                     de continuar.
                 </p>
                 <deflist collapsible="true">

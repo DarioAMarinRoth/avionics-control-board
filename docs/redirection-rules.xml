@@ -23,4 +23,12 @@
         <description>Created after removal of "Compilar y Flashear el Master" from Avionics Control Board</description>
         <accepts>master-compile-guide.html</accepts>
     </rule>
+    <rule id="3e838070">
+        <description>Created after removal of "install-guide" from Avionics Control Board</description>
+        <accepts>install-guide.html</accepts>
+    </rule>
+    <rule id="39c1403d">
+        <description>Created after removal of "writerside-cheatsheet" from Avionics Control Board</description>
+        <accepts>starter-topic.html</accepts>
+    </rule>
 </rules>

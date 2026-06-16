@@ -3,7 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="docs_libraries"
-                  name="docs_libraries" is-library="true" start-page="install-guide.topic">
+                  name="docs_libraries" is-library="true" start-page="icons.topic">
 
-    <toc-element topic="install-guide.topic"/>
+    <toc-element topic="icons.topic"/>
 </instance-profile>

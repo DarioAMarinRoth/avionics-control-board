@@ -4,10 +4,10 @@
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
        title="Compilar y Flashear con Windows" id="Compilar-y-Flashear-con-Windows">
+    <p> Esta guía está dirigida a los usuarios que necesiten compilar el código fuente, ya sea el dispositivo Master
+        o Slave, desde un sistema con Windows</p>
 
     <chapter title="Introducción">
-        <p> Esta guía está dirigida a los usuarios que necesiten compilar el código fuente, ya sea el dispositivo Master
-            o Slave, desde un sistema con Windows</p>
         <p> El sistema de build utiliza herramientas y comandos propios de Linux por lo que no puede ejecutarse en
             Windows nativo. La opción más robusta es WSL2 (Windows Subsystem for Linux) con Ubuntu, que permite usar el
             mismo flujo que en Linux. Para el flasheo del firmware por USB se requiere además la herramienta usbipd-win,
@@ -85,7 +85,8 @@
         </chapter>
 
         <chapter title="3. Uso">
-            Para compilar y flashear, siga los pasos descritos en <a href="Compilar-y-Flashear-el-Firmware.topic">Compilar y Flashear
+            Para compilar y flashear, siga los pasos descritos en <a href="Compilar-y-Flashear-el-Firmware.topic">Compilar
+            y Flashear
             el Firmware</a> desde la terminal de WSL.
         </chapter>
     </chapter>
